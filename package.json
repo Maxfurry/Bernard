@@ -9,6 +9,7 @@
     "clean": "rm -rf build && mkdir build",
     "build": "npm run clean && npm run build-babel",
     "build-babel": "babel -d ./build ./src -s",
+    "migrate": "babel-node ./src/migrations/index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,9 +24,13 @@
   },
   "homepage": "https://github.com/Maxfurry/Hospital-Managment-Software#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.4.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.6",
