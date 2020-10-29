@@ -1,5 +1,5 @@
 import {Pool} from 'pg';
-import dotenv from 'dotenv/types';
+import dotenv from 'dotenv';
 
 dotenv.config();
 let pool;
