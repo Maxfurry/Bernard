@@ -1,5 +1,5 @@
-import migrate from '../../../src/migrations/migration';
-import pool from '../../../src/models/db';
+import migrate from '../migrations/migration';
+import pool from '../models/db';
 
 (async function (){
     try{

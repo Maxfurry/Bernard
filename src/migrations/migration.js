@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS
     users(
         id UUID PRIMARY KEY NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-        username VARCHAR(20) UNIQUE NOT NULL,
+        username VARCHAR(20) NOT NULL UNIQUE,
         password VARCHAR(20) NOT NULL,
         user_type VARCHAR(20) NOT NULL,
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
@@ -11,7 +11,6 @@ CREATE TABLE IF NOT EXISTS
 `
 const createPatientTable = `
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE TYPE IF NOT EXISTS gender_type AS ENUM(‘Male’, ‘Female’, ‘Others’);
 CREATE TABLE IF NOT EXISTS
     patient(
         id UUID PRIMARY KEY NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
@@ -20,11 +19,11 @@ CREATE TABLE IF NOT EXISTS
         middle_name VARCHAR(20) NULL,
         last_name VARCHAR(20) NOT NULL,
         age int NULL,
-        gender gender_type NOT NULL DEFAULT Male,
+        gender VARCHAR(10) NOT NULL DEFAULT 'male',
         occupation VARCHAR(20) NULL,
         FOREIGN KEY (user_id) REFERENCES "users" (id) ON DELETE CASCADE
-    );
-`
+        );
+        `
 
 const createDoctorTable = `
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -59,7 +58,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS
     speciality(
         id UUID PRIMARY KEY NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-        speciality VARCHAR(50) NOT NULL
+        speciality_field VARCHAR(50) NOT NULL
     );
 `
 const createSubSpecialityTable = `
@@ -69,7 +68,7 @@ CREATE TABLE IF NOT EXISTS
         id UUID PRIMARY KEY NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
         speciality_id UUID NOT NULL,
         sub_speciality VARCHAR(50) NOT NULL,
-        FOREIGN KEY (speciality_id) "speciality" (id) ON DELETE CASCADE
+        FOREIGN KEY (speciality_id) REFERENCES "speciality" (id) ON DELETE CASCADE
     );
 `
 
