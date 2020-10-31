@@ -1,10 +1,19 @@
 const createUserTable = `
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS patient CASCADE;
+DROP TABLE IF EXISTS nurse CASCADE;
+DROP TABLE IF EXISTS doctor CASCADE;
+DROP TABLE IF EXISTS speciality CASCADE;
+DROP TABLE IF EXISTS sub_speciality CASCADE;
+DROP TABLE IF EXISTS doctor_speciality CASCADE;
+DROP TABLE IF EXISTS nurse_speciality CASCADE;
+
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS
     users(
         id UUID PRIMARY KEY NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
-        username VARCHAR(20) NOT NULL UNIQUE,
-        password VARCHAR(20) NOT NULL,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        password VARCHAR(150) NOT NULL,
         user_type VARCHAR(20) NOT NULL,
         created_at TIMESTAMP NOT NULL DEFAULT NOW()
     );
