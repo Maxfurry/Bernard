@@ -1,9 +1,16 @@
 import express from 'express';
-
+import cors from 'cors';
+import {json, urlencoded}  from 'body-parser';
+import AuthRoute from './routes/auth.routes';
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+app.use(json())
+app.use(urlencoded({extended: true}))
+app.use(cors())
+app.use('/api/v1/', AuthRoute);
+
+const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res)=>{
      res.status(200).json({
