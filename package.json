@@ -8,6 +8,7 @@
     "start:dev": "nodemon --exec babel-node src/server.js",
     "clean": "rm -rf build && mkdir build",
     "build": "npm run clean && npm run build-babel",
+    "migrate": "babel-node ./src/migrations/index.js",
     "build-babel": "babel -d ./build ./src -s",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,7 +26,9 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pg": "^8.4.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.6",
