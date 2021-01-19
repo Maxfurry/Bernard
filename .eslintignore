@@ -1,0 +1,3 @@
+# Excluding node-modules folder
+node_modules
+/database/models/index.js
