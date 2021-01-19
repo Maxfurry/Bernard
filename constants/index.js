@@ -1,0 +1,10 @@
+module.exports = {
+  FORBIDDEN_CODE: 403,
+  OK_CODE: 200,
+  RESOURCE_CREATED_CODE: 201,
+  NOT_FOUND_CODE: 404,
+  CONFLICT_CODE: 409,
+  SERVER_ERROR_CODE: 500,
+  REDIRECT_CODE: 302,
+  SERVER_ERROR_MESSAGE: 'Ooops! Something went wrong, kindly try again',
+};
