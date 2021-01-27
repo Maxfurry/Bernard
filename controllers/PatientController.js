@@ -29,7 +29,7 @@ class PatientController {
    * @description get a patient by Id
    */
   static async getPatientById(req, res) {
-    let validation = validateParms.id(req.query);
+    let validation = validateParms.id(req.params);
     if (validation.error) return failureResponse(res, validation.error);
     const transaction = await sequelize.transaction();
 
