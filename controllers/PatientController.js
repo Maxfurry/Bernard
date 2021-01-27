@@ -33,7 +33,7 @@ class PatientController {
     if (validation.error) return failureResponse(res, validation.error);
 
     try {
-      const singlePatient = await getPatient(req.params, { transaction })
+      const singlePatient = await getPatient(req.params)
 
       return successResponse(
         res,
@@ -56,7 +56,7 @@ class PatientController {
     if (validation.error) return failureResponse(res, validation.error);
 
     try {
-      const singlePatient = await searchForPatient(req.query.name, { transaction })
+      const singlePatient = await searchForPatient(req.query.name)
       return successResponse(
         res,
         'search results',
