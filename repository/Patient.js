@@ -45,7 +45,28 @@ class Patient {
 
   }
 
+  static async searchForPatient(name = '', transaction = {}) {
 
+    return await patientModel.findAll({
+      where: {
+        [Op.or]: {
+          firstName: {
+            [Op.iLike]: `%${name}%`
+          },
+          lastName: {
+            [Op.iLike]: `%${name}%`
+          }
+        }
+      },
+      include: [
+        {
+          model: userModel, as: 'login_details',
+          attributes: ['email']
+        }
+      ]
+    }, transaction);
+
+  }
 }
 
 module.exports = Patient;
