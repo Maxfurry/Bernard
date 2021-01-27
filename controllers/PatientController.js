@@ -31,7 +31,6 @@ class PatientController {
   static async getPatientById(req, res) {
     let validation = validateParms.id(req.params);
     if (validation.error) return failureResponse(res, validation.error);
-    const transaction = await sequelize.transaction();
 
     try {
       const singlePatient = await getPatient(req.params, { transaction })
@@ -57,7 +56,6 @@ class PatientController {
     let validation = validateParms.searchForPatient(req.query);
     if (validation.error) return failureResponse(res, validation.error);
 
-    const transaction = await sequelize.transaction();
     try {
       console.log('line 64')
       const singlePatient = await searchForPatient(req.query.name, { transaction })
