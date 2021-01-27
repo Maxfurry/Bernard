@@ -26,7 +26,7 @@ class Patient {
   /**
    * @description This controller is used to get a patient by their Id
   */
-  static async getPatient(field = {}, transaction = {}) {
+  static async getPatient(field = {}) {
     const { id } = field;
     return await patientModel.findOne(
       {
@@ -40,12 +40,12 @@ class Patient {
             attributes: ['email']
           }
         ]
-      }, transaction
+      }
     )
 
   }
 
-  static async searchForPatient(name = '', transaction = {}) {
+  static async searchForPatient(name = '') {
 
     return await patientModel.findAll({
       where: {
@@ -64,7 +64,7 @@ class Patient {
           attributes: ['email']
         }
       ]
-    }, transaction);
+    });
 
   }
 }
