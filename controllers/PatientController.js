@@ -34,16 +34,15 @@ class PatientController {
 
     try {
       const singlePatient = await getPatient(req.params, { transaction })
-      await transaction.commit();
+
       return successResponse(
         res,
-        'patient profile fetched successfully',
+        'Patient details fetched successfully',
         OK_CODE,
         singlePatient
       )
     } catch (error) {
       console.log(error);
-      await transaction.rollback();
       return serverFailure(res, 'Could not fetch patient')
     }
   }
@@ -57,9 +56,7 @@ class PatientController {
     if (validation.error) return failureResponse(res, validation.error);
 
     try {
-      console.log('line 64')
       const singlePatient = await searchForPatient(req.query.name, { transaction })
-      await transaction.commit();
       return successResponse(
         res,
         'search results',
@@ -68,7 +65,6 @@ class PatientController {
       )
     } catch (error) {
       console.log(error);
-      await transaction.rollback();
       return serverFailure(res, 'Could not fetch patient')
     }
   }
