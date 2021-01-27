@@ -49,6 +49,31 @@ class PatientController {
     }
   }
 
+  /**
+ * @param req.query firstname, lastname
+ * @description search for a patient by their firstname or lastname
+ */
+  static async searchForPatient(req, res) {
+    let validation = validateParms.searchForPatient(req.query);
+    if (validation.error) return failureResponse(res, validation.error);
+
+    const transaction = await sequelize.transaction();
+    try {
+      console.log('line 64')
+      const singlePatient = await searchForPatient(req.query.name, { transaction })
+      await transaction.commit();
+      return successResponse(
+        res,
+        'search results',
+        OK_CODE,
+        singlePatient
+      )
+    } catch (error) {
+      console.log(error);
+      await transaction.rollback();
+      return serverFailure(res, 'Could not fetch patient')
+    }
+  }
 }
 
 module.exports = PatientController;
