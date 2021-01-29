@@ -1,5 +1,6 @@
 const express = require('express'),
   cors = require('cors'),
+  errorhandler = require('errorhandler'),
   router = require('./routers'),
   isProduction = process.env.NODE_ENV === 'production';
 
@@ -11,14 +12,18 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', router);
 
-app.get("/", (req, res) => {
-  res.status(200).send("Hello World!");
+if (!isProduction) {
+  app.use(errorhandler());
+}
+
+app.get('/', (req, res) => {
+  res.status(200).send('Hello World!');
 });
 
 const PORT = process.env.APP_PORT || 3000;
 
-const server = app.listen(PORT,()=>{
-  console.log(`Server started on port ${PORT}`)
-})
+const server = app.listen(PORT, () => {
+  process.stdout.write(`listening on port ${PORT}\n`);
+});
 
 module.exports = server;

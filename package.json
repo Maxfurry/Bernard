@@ -4,11 +4,16 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start:dev": "nodemon ./src/App.ts",
-    "start": "node ./build/App.js",
-    "build": "tsc",
+    "start:dev": "nodemon ./server.js",
+    "start": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "npx sequelize db:migrate"
+    "migrate": "npx sequelize db:migrate",
+    "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "author": "Peerless",
   "license": "ISC",
@@ -16,13 +21,17 @@
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "eslint": "^7.17.0",
+    "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "joi": "^17.3.0",
     "pg": "^8.5.1",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "husky": "^4.3.8",
     "nodemon": "^2.0.7",
     "sequelize-cli": "^6.2.0"
   }

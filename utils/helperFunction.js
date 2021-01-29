@@ -1,4 +1,6 @@
-const { OK_CODE, NOT_FOUND_CODE, SERVER_ERROR_CODE, SERVER_ERROR_MESSAGE } = require('../constants');
+const {
+  OK_CODE, NOT_FOUND_CODE, SERVER_ERROR_CODE, SERVER_ERROR_MESSAGE
+} = require('../constants');
 
 const successResponse = (res, message, statusCode = OK_CODE, data) => res.status(statusCode).json({
   success: true,
