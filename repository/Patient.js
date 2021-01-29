@@ -1,6 +1,5 @@
-const bcrypt = require("bcrypt");
-const { Op } = require("sequelize");
-const { Patient: patientModel, User: userModel } = require("../database/models");
+const { Op } = require('sequelize');
+const { Patient: patientModel, User: userModel } = require('../database/models');
 
 class Patient {
   static async create(field = {}, transaction = {}) {
@@ -9,12 +8,12 @@ class Patient {
       {
         email,
         password,
-        userType: "Patient",
+        userType: 'Patient',
       },
       transaction
     );
 
-    return await patientModel.create(
+    return patientModel.create(
       {
         ...field,
         userId: user.id,
@@ -28,7 +27,7 @@ class Patient {
   */
   static async getPatient(field = {}, transaction = {}) {
     const { id } = field;
-    return await patientModel.findOne(
+    return patientModel.findOne(
       {
         where: {
           id
@@ -41,12 +40,11 @@ class Patient {
           }
         ]
       }, transaction
-    )
-
+    );
   }
 
   static async searchForPatient(name = '', transaction = {}) {
-    return await patientModel.findAll({
+    return patientModel.findAll({
       where: {
         [Op.or]: {
           firstName: {
@@ -59,12 +57,12 @@ class Patient {
       },
       include: [
         {
-          model: userModel, as: 'login_details',
+          model: userModel,
+          as: 'login_details',
           attributes: ['email']
         }
       ]
     }, transaction);
-
   }
 }
 

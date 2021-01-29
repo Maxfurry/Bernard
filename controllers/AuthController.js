@@ -5,6 +5,7 @@ const {
 
 class AuthController {
   static async authenticate(req, res) {
+    bcrypt.compare(res);
     return res.status(OK_CODE).send('Log in Successful!');
   }
 }

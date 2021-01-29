@@ -1,4 +1,3 @@
-'use strict';
 const {
   Model
 } = require('sequelize');
@@ -16,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'login_details'
       });
     }
-  };
+  }
 
   Patient.init({
     id: {

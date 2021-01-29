@@ -3,34 +3,35 @@ const {
 } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Admission extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasOne(models.Patient, {
-        foreignKey: 'userId',
-        as: 'login_details',
-        onDelete: 'CASCADE',
+      this.belongsTo(models.Patient, {
+        foreignKey: 'patientId',
+        as: 'patient_details'
       });
     }
   }
-
-  User.init({
+  Admission.init({
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    isVerified: DataTypes.BOOLEAN,
-    userType: DataTypes.STRING,
+    admittedOn: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    dischargedOn: DataTypes.DATE,
+    roomNumber: DataTypes.STRING,
+    bedNumber: DataTypes.STRING,
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'Admission',
   });
-  return User;
+  return Admission;
 };
