@@ -20,10 +20,10 @@ app.get('/', (req, res) => {
   res.status(200).send('Hello World!');
 });
 
-const PORT = process.env.APP_PORT || 3000;
+const APP_PORT = process.env.PORT || 3000;
 
-const server = app.listen(PORT, () => {
-  process.stdout.write(`listening on port ${PORT}\n`);
+const server = app.listen(APP_PORT, () => {
+  process.stdout.write(`listening on port ${APP_PORT}\n`);
 });
 
 module.exports = server;
