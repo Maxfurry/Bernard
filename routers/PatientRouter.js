@@ -8,9 +8,13 @@ router.post('/auth/signup', PatientController.register);
 router.get('/search', PatientController.searchForPatient);
 
 // to get a patient by their Id
-router.get('/:id', PatientController.getPatientById);
+router.get('/profile/:id', PatientController.getPatientById);
 
 // to register a patient
 router.post('/', PatientController.register);
 
+// get all patients
+router.get('/all', PatientController.getAllPatients);
+
+router.get('/records/:patientId', PatientController.getAllAdmissionRecordsForAPatientController);
 module.exports = router;
