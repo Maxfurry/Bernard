@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Patient: patientModel, User: userModel } = require('../database/models');
+const { Patient: patientModel, User: userModel, Admission: admissionModel} = require('../database/models');
 
 class Patient {
   static async create(field = {}, transaction = {}) {
@@ -62,6 +62,32 @@ class Patient {
           attributes: ['email']
         }
       ]
+    }, transaction);
+  }
+
+  static async getAllPatient(query, transaction = {}) {
+    return patientModel.findAll({
+      limit: query.count,
+      offset: query.start,
+      include: [
+        {
+          model: userModel,
+          as: 'login_details',
+          attributes: {
+            exclude: ['password']
+          }
+        }
+      ]
+    }, transaction);
+  }
+
+  static async getAllAdmissionRecordForAPatient(req, {start, count}, transaction = {}) {
+    return admissionModel.findAll({
+      limit: count,
+      offset: start,
+      where: {
+       patientId: req.patientId
+      },
     }, transaction);
   }
 }
