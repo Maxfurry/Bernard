@@ -82,6 +82,26 @@ class PatientController {
         }
     }
 
+    /**
+* @param req.params -- recordId
+* @description get a patient addmission record by record Id
+*/
+    static async getAdmissionRecordController(req, res) {
+        const validation = idValidation({ id: req.params.recordId });
+        if (validation.error) return failureResponse(res, 'recordId is required or Invalid');
+
+        try {
+            const admissionRecord = await getAdmissionRecord(req.params);
+            return successResponse(
+                res,
+                'Patient Admission Record fetched Successfully!',
+                OK_CODE,
+                admissionRecord
+            );
+        } catch (error) {
+            return serverFailure(res, 'Could not fetch admission record');
+        }
+    }
 }
 
 module.exports = PatientController;
