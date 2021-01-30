@@ -62,6 +62,25 @@ class PatientController {
         }
     }
 
+    /**
+* @param req.params -- recordId
+* @description delete a patient addmission record by record Id
+*/
+    static async deleteAdmissionRecordController(req, res) {
+        const validation = idValidation({ id: req.params.recordId });
+        if (validation.error) return failureResponse(res, 'recordId is required or Invalid');
+
+        try {
+            await deleteAdmissionRecord(req.params);
+            return successResponse(
+                res,
+                'Patient Admission Record Deleted Successfully!',
+                OK_CODE
+            );
+        } catch (error) {
+            return serverFailure(res, 'Could not delete admission record');
+        }
+    }
 
 }
 
