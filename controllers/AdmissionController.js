@@ -36,6 +36,32 @@ class PatientController {
         }
     }
 
+    /**
+ * @param req.body -  {
+ *  recordId, admittedOn, dischargedOn, roomNumber, bedNumber
+ * }
+ * @description update a patient addmission record by record Id
+ */
+    static async updateAdmittedRecord(req, res) {
+        const validation = idValidation({ id: req.params.recordId });
+        if (validation.error) return failureResponse(res, 'recordId is required or Invalid');
+
+        try {
+            const recordExist = await getAdmissionRecord({ recordId: req.params.recordId });
+            if (!recordExist) return failureResponse(res, 'Record not found', NOT_FOUND_CODE);
+
+            const updatedAdmissionRecord = await updateAdmissionRecord(req.body, recordExist);
+            return successResponse(
+                res,
+                'Patient Admission Record Updated Successfully!',
+                OK_CODE,
+                updatedAdmissionRecord
+            );
+        } catch (error) {
+            return serverFailure(res, 'Could not update admission record');
+        }
+    }
+
 
 }
 
