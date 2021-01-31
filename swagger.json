@@ -1,0 +1,407 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Hospital Management Software Api Documentation",
+    "version": "1.0.0",
+    "title": "Hospital Management API",
+    "contact": {
+      "email": "ananioluwatobiloba2000@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "schemes": ["http"],
+  "host": "localhost:3000",
+  "basePath": "/api",
+  "paths": {
+    "/patient/auth/signup": {
+      "post": {
+        "summary": "Signup as a patient",
+        "description": "To signup as a patient",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Patient Registration Successfully!",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "500": {
+            "description": "Could not register patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/search": {
+      "get": {
+        "summary": "Search for data",
+        "description": "Search for firstname or lastname",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "description": "search through firstname and lastname in db",
+            "required": true,
+            "schema": {
+              "type": "query",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "$ref": "#/definitions/successResponse"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "search results",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/all": {
+      "get": {
+        "summary": "Fetch all patients",
+        "description": "Search for firstname or lastname",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "description": "start is where the pagination starts default is 0",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "count",
+            "description": " count is how many results it returns default is 20",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all patients successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/{id}": {
+      "put": {
+        "summary": "get a patient proflle by Id",
+        "description": "Fetch a patient by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "profile id that needs to be fetched",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          }
+        }
+      }
+    },
+    "/patient/admit/": {
+      "post": {
+        "summary": "Create a patient admission record",
+        "description": "This route is to create a patient admission record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "type": "string"
+                },
+                "admittedOn": {
+                  "type": "string"
+                },
+                "dischargedOn": {
+                    "type": "string"
+                },
+                "roomNumber": {
+                    "type": "string"
+                },
+                "bedNumber": {
+                    "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient Admitted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/admit/:{recordId}/update": {
+        "put": {
+          "summary": "update a patient admission record",
+          "description": "This route is to update a patient admission record",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "patient details",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "patientId": {
+                    "type": "string"
+                  },
+                  "admittedOn": {
+                    "type": "string"
+                  },
+                  "dischargedOn": {
+                      "type": "string"
+                  },
+                  "roomNumber": {
+                      "type": "string"
+                  },
+                  "bedNumber": {
+                      "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Patient Admission Record Updated Successfully!",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/successResponse"
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid parameters error",
+              "schema": {
+                "$ref": "#/definitions/failureResponse"
+              }
+            },
+            "500": {
+              "description": "Could not fetch patient",
+              "schema": {
+                "$ref": "#/definitions/serverFailure"
+              }
+            }
+          }
+        }
+      },
+      "/patient/admit/:{recordId}/delete": {
+        "put": {
+          "summary": "delete a patient admission record",
+          "description": "This route is to delete a patient admission record",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "responses": {
+            "200": {
+              "description": "Patient Admission Record Deleted Successfully!",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/successResponse"
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid parameters error",
+              "schema": {
+                "$ref": "#/definitions/failureResponse"
+              }
+            },
+            "500": {
+              "description": "Could not fetch patient",
+              "schema": {
+                "$ref": "#/definitions/serverFailure"
+              }
+            }
+          }
+        }
+      },
+      "/patient/admit/:{recordId}": {
+        "get": {
+          "summary": "get a patient admission record",
+          "description": "This route is to get a patient admission record",
+          "produces": ["application/json"],
+          "consumes": ["application/json"],
+          "responses": {
+            "200": {
+              "description": "Patient Admission Record fetched Successfully!",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/successResponse"
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid parameters error",
+              "schema": {
+                "$ref": "#/definitions/failureResponse"
+              }
+            },
+            "500": {
+              "description": "Could not fetch patient",
+              "schema": {
+                "$ref": "#/definitions/serverFailure"
+              }
+            }
+          }
+        }
+      }
+  },
+  "definitions": {
+    "successResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array"
+        }
+      }
+    },
+    "failureResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "serverFailure": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
