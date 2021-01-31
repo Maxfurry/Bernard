@@ -7,13 +7,7 @@
     "start:dev": "nodemon ./server.js",
     "start": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "npx sequelize db:migrate",
-    "lint": "./node_modules/eslint/bin/eslint.js './**/*.js'"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
+    "migrate": "npx sequelize db:migrate"
   },
   "author": "Peerless",
   "license": "ISC",
@@ -25,7 +19,9 @@
     "express": "^4.17.1",
     "joi": "^17.3.0",
     "pg": "^8.5.1",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "swagger-jsdoc": "^6.0.2",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "eslint": "^7.18.0",
