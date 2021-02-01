@@ -1,4 +1,4 @@
-const { RESOURCE_CREATED_CODE, OK_CODE } = require('../constants');
+const { RESOURCE_CREATED_CODE, OK_CODE, BAD_REQUEST } = require('../constants');
 const { successResponse, serverFailure, failureResponse } = require('../utils/helperFunction');
 const { create, getPatient, searchForPatient, getAllPatient, getAllAdmissionRecordForAPatient} = require('../repository/Patient');
 const { sequelize } = require('../database/models');
@@ -52,7 +52,7 @@ class PatientController {
  */
   static async searchForPatient(req, res) {
     const validation = validateParms.searchForPatient(req.query);
-    if (validation.error) return failureResponse(res, validation.error);
+    if (validation.error) return failureResponse(res, validation.error, BAD_REQUEST);
 
     try {
       const singlePatient = await searchForPatient(req.query.name);
