@@ -7,7 +7,13 @@
     "start:dev": "nodemon ./server.js",
     "start": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "npx sequelize db:migrate"
+    "migrate": "npx sequelize db:migrate",
+    "lint": "npx eslint './**/*.js' --ext .js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "author": "Peerless",
   "license": "ISC",

@@ -1,10 +1,10 @@
 const express = require('express'),
-cors = require('cors'),
-errorhandler = require('errorhandler'),
-router = require('./routers'),
-isProduction = process.env.NODE_ENV === 'production';
-swaggerUi = require('swagger-ui-express');
-swaggerDocument = require('./swagger.json');
+  cors = require('cors'),
+  errorhandler = require('errorhandler'),
+  swaggerUi = require('swagger-ui-express'),
+  swaggerDocument = require('./swagger.json'),
+  router = require('./routers'),
+  isProduction = process.env.NODE_ENV === 'production';
 
 require('dotenv').config();
 

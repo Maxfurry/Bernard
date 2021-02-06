@@ -1,10 +1,11 @@
 const { RESOURCE_CREATED_CODE, OK_CODE, BAD_REQUEST } = require('../constants');
 const { successResponse, serverFailure, failureResponse } = require('../utils/helperFunction');
-const { create, getPatient, searchForPatient, getAllPatient, getAllAdmissionRecordForAPatient} = require('../repository/Patient');
+const {
+  create, getPatient, searchForPatient, getAllPatient, getAllAdmissionRecordForAPatient
+} = require('../repository/Patient');
 const { sequelize } = require('../database/models');
 const validateParms = require('../middleware/PatientController.validation');
 const { paginationQuery, idValidation } = require('../middleware/generalValidation');
-const { string } = require('joi');
 
 class PatientController {
   static async register(req, res) {
@@ -94,25 +95,24 @@ class PatientController {
 * @param req.query -- patientId pagination query (start & count)
 * @description get all admission records of a patients
 */
-static async getAllAdmissionRecordsForAPatientController(req, res) {
-  const start = req.query.start || 0;
-  const count = req.query.count || 20;
-  const queryValidation = paginationQuery({ start, count });
-  if (queryValidation.error)
-    return failureResponse(res, queryValidation.error);
+  static async getAllAdmissionRecordsForAPatientController(req, res) {
+    const start = req.query.start || 0;
+    const count = req.query.count || 20;
+    const queryValidation = paginationQuery({ start, count });
+    if (queryValidation.error) return failureResponse(res, queryValidation.error);
 
-  try {
-    const allRecords = await getAllAdmissionRecordForAPatient(req.params, {start, count});
-    return successResponse(
-      res,
-      'fetched all admission records for a patient successfully',
-      OK_CODE,
-      allRecords
-    );
-  } catch (error) {
-    return serverFailure(res, 'Could not fetch patient');
+    try {
+      const allRecords = await getAllAdmissionRecordForAPatient(req.params, { start, count });
+      return successResponse(
+        res,
+        'fetched all admission records for a patient successfully',
+        OK_CODE,
+        allRecords
+      );
+    } catch (error) {
+      return serverFailure(res, 'Could not fetch patient');
+    }
   }
-}
 }
 
 module.exports = PatientController;
