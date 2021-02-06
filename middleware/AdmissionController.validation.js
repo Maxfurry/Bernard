@@ -11,7 +11,9 @@ const validateParms = {
       bedNumber: Joi.string().min(1)
     });
 
-    return JoiSchema.validate({ patientId, admittedOn, dischargedOn, roomNumber, bedNumber } = obj);
+    return JoiSchema.validate({
+      patientId, admittedOn, dischargedOn, roomNumber, bedNumber
+    } = obj);
   },
 };
 

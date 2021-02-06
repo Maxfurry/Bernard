@@ -2,7 +2,9 @@ const { Admission: admissionModel, Patient: patientModel } = require('../databas
 
 class Addmission {
   static async create(field = {}, transaction = {}) {
-    const { admittedOn, dischargedOn, roomNumber, bedNumber, patientId } = field;
+    const {
+      admittedOn, dischargedOn, roomNumber, bedNumber, patientId
+    } = field;
     return await admissionModel.create(
       {
         patientId,
@@ -41,7 +43,6 @@ class Addmission {
       transaction
     );
   }
-
 
   static async getAdmissionRecord(field = {}, transaction = {}) {
     const { recordId } = field;

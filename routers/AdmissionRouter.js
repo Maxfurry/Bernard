@@ -6,7 +6,7 @@ router.post('/', AdmissionController.admitPatient);
 
 router.put('/:recordId/update', AdmissionController.updateAdmittedRecord);
 
-router.delete('/:recordId/delete', AdmissionController.deleteAdmissionRecordController)
+router.delete('/:recordId/delete', AdmissionController.deleteAdmissionRecordController);
 
 router.get('/:recordId', AdmissionController.getAdmissionRecordController);
 

@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Patient: patientModel, User: userModel, Admission: admissionModel} = require('../database/models');
+const { Patient: patientModel, User: userModel, Admission: admissionModel } = require('../database/models');
 
 class Patient {
   static async create(field = {}, transaction = {}) {
@@ -81,12 +81,12 @@ class Patient {
     }, transaction);
   }
 
-  static async getAllAdmissionRecordForAPatient(req, {start, count}, transaction = {}) {
+  static async getAllAdmissionRecordForAPatient(req, { start, count }, transaction = {}) {
     return admissionModel.findAll({
       limit: count,
       offset: start,
       where: {
-       patientId: req.patientId
+        patientId: req.patientId
       },
     }, transaction);
   }
