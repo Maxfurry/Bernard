@@ -45,7 +45,7 @@ class PatientController {
     bloodGroup
     genotype
 * }
-* @description update a patient addmission record by record Id
+* @description update a patient record by patient Id
 */
   static async updatePatientRecord(req, res) {
     const validation = idValidation({ id: req.params.patientId });
