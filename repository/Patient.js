@@ -43,6 +43,20 @@ class Patient {
     );
   }
 
+   /**
+   * @description This controller is used to get a patient by their Id
+  */
+ static async getPatientByEmail(field = {}, transaction = {}) {
+  const { email } = field;
+  return userModel.findOne(
+    {
+      where: {
+        email
+      },
+    }, transaction
+  );
+}
+
   static async searchForPatient(name = '', transaction = {}) {
     return patientModel.findAll({
       where: {
