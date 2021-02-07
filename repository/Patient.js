@@ -104,6 +104,36 @@ class Patient {
       },
     }, transaction);
   }
+
+  static async updatePatientRecord(field = {}, previous_record = {}, transaction = {}) {
+    const firstName = field.firstName || previous_record.firstName;
+    const lastName = field.lastName || previous_record.lastName;
+    const dateOfBirth = field.dateOfBirth || previous_record.dateOfBirth;
+    const gender = field.gender || previous_record.gender;
+    const phoneNumber = field.phoneNumber || previous_record.phoneNumber;
+    const height = field.height || previous_record.height;
+    const weight = field.weight || previous_record.weight;
+    const bloodGroup = field.bloodGroup || previous_record.bloodGroup;
+    const genotype = field.genotype || previous_record.genotype;
+
+    return await patientModel.update(
+      {
+        firstName,
+        lastName,
+        dateOfBirth,
+        gender,
+        phoneNumber,
+        height,
+        weight,
+        bloodGroup,
+        genotype
+      },
+      {
+        where: { id: previous_record.id }, returning: true
+      },
+      transaction
+    );
+  }
 }
 
 module.exports = Patient;
