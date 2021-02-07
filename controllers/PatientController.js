@@ -1,7 +1,8 @@
-const { RESOURCE_CREATED_CODE, OK_CODE, BAD_REQUEST } = require('../constants');
+const { RESOURCE_CREATED_CODE, OK_CODE, BAD_REQUEST, NOT_FOUND_CODE } = require('../constants');
 const { successResponse, serverFailure, failureResponse } = require('../utils/helperFunction');
 const {
-  create, getPatient, searchForPatient, getAllPatient, getAllAdmissionRecordForAPatient
+  create, getPatient, searchForPatient, updatePatientRecord, getAllPatient, getAllAdmissionRecordForAPatient,
+  getPatientByEmail
 } = require('../repository/Patient');
 const { sequelize } = require('../database/models');
 const validateParms = require('../middleware/PatientController.validation');
@@ -9,8 +10,14 @@ const { paginationQuery, idValidation } = require('../middleware/generalValidati
 
 class PatientController {
   static async register(req, res) {
+    const validation = validateParms.registerPatient(req.body);
+    if (validation.error) return failureResponse(res, validation.error);
+
     const transaction = await sequelize.transaction();
     try {
+      const recordExist = await getPatientByEmail({ email: req.body.email });
+      if (recordExist) return failureResponse(res, 'email already exists', NOT_FOUND_CODE);
+
       const newPatient = await create(req.body, { transaction });
       await transaction.commit();
       return successResponse(
@@ -20,10 +27,12 @@ class PatientController {
         newPatient
       );
     } catch (error) {
+      console.log("🚀 ~ file: PatientController.js ~ line 30 ~ PatientController ~ register ~ error", error)
       await transaction.rollback();
       return serverFailure(res, 'Could not register patient');
     }
   }
+
 
   /**
    * @param req.params -  id
