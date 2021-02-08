@@ -28,6 +28,38 @@ class PatientLabReportController {
         }
     }
 
+    /**
+  * @param req.body -  {
+      patientId
+      testName
+      isActive
+      testValue
+      minValue
+      maxValue
+      calUnit
+      comment
+  * }
+  * @description update a patient Lab report by reportId
+  */
+    static async updatePatientLabReport(req, res) {
+        const validation = idValidation({ id: req.params.reportId });
+        if (validation.error) return failureResponse(res, 'reportId is required or Invalid');
+
+        try {
+            const recordExist = await getPatientLabReport({ id: req.params.reportId });
+            if (!recordExist) return failureResponse(res, 'patient lab report not found', NOT_FOUND_CODE);
+
+            const updatedPatientLabReport = await updatePatientLabReport(req.body, recordExist);
+            return successResponse(
+                res,
+                'Patient Lab report Updated Successfully!',
+                OK_CODE,
+                updatedPatientLabReport[1]
+            );
+        } catch (error) {
+           return serverFailure(res, 'Could not update patient lab report');
+        }
+    }
 
 }
 
