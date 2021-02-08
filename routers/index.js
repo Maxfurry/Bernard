@@ -3,7 +3,7 @@ const router = require('express').Router();
 const AuthRouter = require('./AuthRouter');
 const PatientRouter = require('./PatientRouter');
 const AdmitRouter = require('./AdmissionRouter');
-const PatientLabReportRouter = require('./PatientLabReportRouter');
+const PatientLabReportRouter = require('./LaboratoryRouter');
 
 router.use('/auth', AuthRouter);
 router.use('/patient', PatientRouter);
