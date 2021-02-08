@@ -471,22 +471,16 @@
                 "patientId": {
                   "type": "string"
                 },
+                "admissionId": {
+                  "type": "string"
+                },
                 "testName": {
                   "type": "string"
                 },
-                "isActive": {
+                "result": {
                   "type": "string"
                 },
                 "testValue": {
-                  "type": "string"
-                },
-                "minValue": {
-                  "type": "string"
-                },
-                "maxValue": {
-                  "type": "string"
-                },
-                "calUnit": {
                   "type": "string"
                 },
                 "comment": {
@@ -539,22 +533,16 @@
                 "patientId": {
                   "type": "string"
                 },
+                "admissionId": {
+                  "type": "string"
+                },
                 "testName": {
                   "type": "string"
                 },
-                "isActive": {
+                "result": {
                   "type": "string"
                 },
                 "testValue": {
-                  "type": "string"
-                },
-                "minValue": {
-                  "type": "string"
-                },
-                "maxValue": {
-                  "type": "string"
-                },
-                "calUnit": {
                   "type": "string"
                 },
                 "comment": {
