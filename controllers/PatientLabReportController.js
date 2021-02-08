@@ -83,7 +83,26 @@ class PatientLabReportController {
         }
     }
 
+    /**
+  * @param req.params -- patientId
+  * @description get all lab records of a patients
+  */
+    static async getAllLabReportsForAPatientController(req, res) {
+        const validation = idValidation({id : req.params.patientId});
+        if (validation.error) return failureResponse(res, validation.error);
 
+        try {
+            const alllabRecords = await getAllLabReportForAPatient(req.params);
+            return successResponse(
+                res,
+                'fetched all lab reports for a patient successfully',
+                OK_CODE,
+                alllabRecords
+            );
+        } catch (error) {
+            return serverFailure(res, 'Could not fetch patient');
+        }
+    }
 }
 
 module.exports = PatientLabReportController;
