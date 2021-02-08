@@ -35,6 +35,33 @@
                 },
                 "password": {
                   "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "gender":{
+                  "type": "string"
+                },
+                "phoneNumber":{
+                  "type": "string"
+                },
+                "height": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "string"
+                },
+                "bloodGroup": {
+                  "type": "string"
+                },
+                "genotype": {
+                  "type": "string"
                 }
               }
             }
@@ -152,8 +179,8 @@
         }
       }
     },
-    "/patient/{id}": {
-      "put": {
+    "/patient/profile/:{id}": {
+      "get": {
         "summary": "get a patient proflle by Id",
         "description": "Fetch a patient by id",
         "produces": ["application/json"],
@@ -164,6 +191,70 @@
             "description": "profile id that needs to be fetched",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          }
+        }
+      }
+    },
+    "/patient/profile/{:id}/edit": {
+      "put": {
+        "summary": "get a patient proflle by Id",
+        "description": "Fetch a patient by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "profile id that needs to be fetched",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "gender":{
+                  "type": "string"
+                },
+                "phoneNumber":{
+                  "type": "string"
+                },
+                "height": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "string"
+                },
+                "bloodGroup": {
+                  "type": "string"
+                },
+                "genotype": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -344,242 +435,7 @@
           "200": {
             "description": "Patient Admission Record fetched Successfully!",
             "schema": {
-              "type": "array",
-              "items": {
                 "$ref": "#/definitions/successResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters error",
-            "schema": {
-              "$ref": "#/definitions/failureResponse"
-            }
-          },
-          "500": {
-            "description": "Could not fetch patient",
-            "schema": {
-              "$ref": "#/definitions/serverFailure"
-            }
-          }
-        }
-      }
-    },
-    "/lab/report/create": {
-      "post": {
-        "summary": "Create a patient lab report",
-        "description": "This route is to create a patient lab report",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "lab report details",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "patientId": {
-                  "type": "string"
-                },
-                "testName": {
-                  "type": "string"
-                },
-                "isActive": {
-                  "type": "string"
-                },
-                "testValue": {
-                  "type": "string"
-                },
-                "minValue": {
-                  "type": "string"
-                },
-                "maxValue": {
-                  "type": "string"
-                },
-                "calUnit": {
-                  "type": "string"
-                },
-                "comment": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Patient Lab Report Created Successfully!",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/successResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters error",
-            "schema": {
-              "$ref": "#/definitions/failureResponse"
-            }
-          },
-          "500": {
-            "description": "Could not fetch patient",
-            "schema": {
-              "$ref": "#/definitions/serverFailure"
-            }
-          }
-        }
-      }
-    },
-    "/lab/report/edit/:{reportId}": {
-      "patch": {
-        "summary": "Edit a patient lab report",
-        "description": "This route is to edit a patient lab report",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "lab report details",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "testName": {
-                  "type": "string"
-                },
-                "isActive": {
-                  "type": "string"
-                },
-                "testValue": {
-                  "type": "string"
-                },
-                "minValue": {
-                  "type": "string"
-                },
-                "maxValue": {
-                  "type": "string"
-                },
-                "calUnit": {
-                  "type": "string"
-                },
-                "comment": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Patient Lab report Updated Successfully!",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/successResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters error",
-            "schema": {
-              "$ref": "#/definitions/failureResponse"
-            }
-          },
-          "500": {
-            "description": "Could not fetch patient",
-            "schema": {
-              "$ref": "#/definitions/serverFailure"
-            }
-          }
-        }
-      }
-    },
-    "/lab/report/create": {
-      "post": {
-        "summary": "Create a patient lab report",
-        "description": "This route is to create a patient lab report",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "lab report details",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "patientId": {
-                  "type": "string"
-                },
-                "testName": {
-                  "type": "string"
-                },
-                "isActive": {
-                  "type": "string"
-                },
-                "testValue": {
-                  "type": "string"
-                },
-                "minValue": {
-                  "type": "string"
-                },
-                "maxValue": {
-                  "type": "string"
-                },
-                "calUnit": {
-                  "type": "string"
-                },
-                "comment": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Patient Lab Report Created Successfully!",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/successResponse"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid parameters error",
-            "schema": {
-              "$ref": "#/definitions/failureResponse"
-            }
-          },
-          "500": {
-            "description": "Could not fetch patient",
-            "schema": {
-              "$ref": "#/definitions/serverFailure"
-            }
-          }
-        }
-      }
-    },
-    "/lab/report/:{reportId}": {
-      "get": {
-        "summary": "get a patient lab report",
-        "description": "This route is to get a patient lab report",
-        "produces": ["application/json"],
-        "consumes": ["application/json"],
-        "responses": {
-          "200": {
-            "description": "Patient lab report fetched successfully",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/successResponse"
-              }
             }
           },
           "400": {
