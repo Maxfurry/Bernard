@@ -35,6 +35,33 @@
                 },
                 "password": {
                   "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "gender":{
+                  "type": "string"
+                },
+                "phoneNumber":{
+                  "type": "string"
+                },
+                "height": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "string"
+                },
+                "bloodGroup": {
+                  "type": "string"
+                },
+                "genotype": {
+                  "type": "string"
                 }
               }
             }
@@ -152,8 +179,8 @@
         }
       }
     },
-    "/patient/{id}": {
-      "put": {
+    "/patient/profile/:{id}": {
+      "get": {
         "summary": "get a patient proflle by Id",
         "description": "Fetch a patient by id",
         "produces": ["application/json"],
@@ -164,6 +191,70 @@
             "description": "profile id that needs to be fetched",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          }
+        }
+      }
+    },
+    "/patient/profile/{:id}/edit": {
+      "put": {
+        "summary": "get a patient proflle by Id",
+        "description": "Fetch a patient by id",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "profile id that needs to be fetched",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "gender":{
+                  "type": "string"
+                },
+                "phoneNumber":{
+                  "type": "string"
+                },
+                "height": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "string"
+                },
+                "bloodGroup": {
+                  "type": "string"
+                },
+                "genotype": {
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -207,13 +298,13 @@
                   "type": "string"
                 },
                 "dischargedOn": {
-                    "type": "string"
+                  "type": "string"
                 },
                 "roomNumber": {
-                    "type": "string"
+                  "type": "string"
                 },
                 "bedNumber": {
-                    "type": "string"
+                  "type": "string"
                 }
               }
             }
@@ -245,126 +336,123 @@
       }
     },
     "/patient/admit/:{recordId}/update": {
-        "put": {
-          "summary": "update a patient admission record",
-          "description": "This route is to update a patient admission record",
-          "produces": ["application/json"],
-          "consumes": ["application/json"],
-          "parameters": [
-            {
-              "in": "body",
-              "name": "body",
-              "description": "patient details",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "patientId": {
-                    "type": "string"
-                  },
-                  "admittedOn": {
-                    "type": "string"
-                  },
-                  "dischargedOn": {
-                      "type": "string"
-                  },
-                  "roomNumber": {
-                      "type": "string"
-                  },
-                  "bedNumber": {
-                      "type": "string"
-                  }
+      "put": {
+        "summary": "update a patient admission record",
+        "description": "This route is to update a patient admission record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "type": "string"
+                },
+                "admittedOn": {
+                  "type": "string"
+                },
+                "dischargedOn": {
+                  "type": "string"
+                },
+                "roomNumber": {
+                  "type": "string"
+                },
+                "bedNumber": {
+                  "type": "string"
                 }
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Patient Admission Record Updated Successfully!",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/successResponse"
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid parameters error",
-              "schema": {
-                "$ref": "#/definitions/failureResponse"
-              }
-            },
-            "500": {
-              "description": "Could not fetch patient",
-              "schema": {
-                "$ref": "#/definitions/serverFailure"
               }
             }
           }
-        }
-      },
-      "/patient/admit/:{recordId}/delete": {
-        "put": {
-          "summary": "delete a patient admission record",
-          "description": "This route is to delete a patient admission record",
-          "produces": ["application/json"],
-          "consumes": ["application/json"],
-          "responses": {
-            "200": {
-              "description": "Patient Admission Record Deleted Successfully!",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/successResponse"
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid parameters error",
-              "schema": {
-                "$ref": "#/definitions/failureResponse"
-              }
-            },
-            "500": {
-              "description": "Could not fetch patient",
-              "schema": {
-                "$ref": "#/definitions/serverFailure"
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient Admission Record Updated Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
               }
             }
-          }
-        }
-      },
-      "/patient/admit/:{recordId}": {
-        "get": {
-          "summary": "get a patient admission record",
-          "description": "This route is to get a patient admission record",
-          "produces": ["application/json"],
-          "consumes": ["application/json"],
-          "responses": {
-            "200": {
-              "description": "Patient Admission Record fetched Successfully!",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/successResponse"
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid parameters error",
-              "schema": {
-                "$ref": "#/definitions/failureResponse"
-              }
-            },
-            "500": {
-              "description": "Could not fetch patient",
-              "schema": {
-                "$ref": "#/definitions/serverFailure"
-              }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
             }
           }
         }
       }
+    },
+    "/patient/admit/:{recordId}/delete": {
+      "put": {
+        "summary": "delete a patient admission record",
+        "description": "This route is to delete a patient admission record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient Admission Record Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/admit/:{recordId}": {
+      "get": {
+        "summary": "get a patient admission record",
+        "description": "This route is to get a patient admission record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient Admission Record fetched Successfully!",
+            "schema": {
+                "$ref": "#/definitions/successResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    }
   },
   "definitions": {
     "successResponse": {

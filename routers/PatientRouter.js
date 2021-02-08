@@ -10,6 +10,8 @@ router.get('/search', PatientController.searchForPatient);
 // to get a patient by their Id
 router.get('/profile/:id', PatientController.getPatientById);
 
+router.put('/profile/:patientId/edit', PatientController.updatePatientRecord);
+
 // get all patients
 router.get('/all', PatientController.getAllPatients);
 

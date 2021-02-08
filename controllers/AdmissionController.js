@@ -57,7 +57,7 @@ class PatientController {
         res,
         'Patient Admission Record Updated Successfully!',
         OK_CODE,
-        updatedAdmissionRecord
+        updatedAdmissionRecord[1]
       );
     } catch (error) {
       return serverFailure(res, 'Could not update admission record');
