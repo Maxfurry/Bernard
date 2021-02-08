@@ -160,7 +160,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
+            "in": "params",
             "description": "profile id that needs to be fetched",
             "required": true,
             "type": "string"
@@ -207,13 +207,13 @@
                   "type": "string"
                 },
                 "dischargedOn": {
-                    "type": "string"
+                  "type": "string"
                 },
                 "roomNumber": {
-                    "type": "string"
+                  "type": "string"
                 },
                 "bedNumber": {
-                    "type": "string"
+                  "type": "string"
                 }
               }
             }
@@ -245,126 +245,389 @@
       }
     },
     "/patient/admit/:{recordId}/update": {
-        "put": {
-          "summary": "update a patient admission record",
-          "description": "This route is to update a patient admission record",
-          "produces": ["application/json"],
-          "consumes": ["application/json"],
-          "parameters": [
-            {
-              "in": "body",
-              "name": "body",
-              "description": "patient details",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "patientId": {
-                    "type": "string"
-                  },
-                  "admittedOn": {
-                    "type": "string"
-                  },
-                  "dischargedOn": {
-                      "type": "string"
-                  },
-                  "roomNumber": {
-                      "type": "string"
-                  },
-                  "bedNumber": {
-                      "type": "string"
-                  }
+      "put": {
+        "summary": "update a patient admission record",
+        "description": "This route is to update a patient admission record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "type": "string"
+                },
+                "admittedOn": {
+                  "type": "string"
+                },
+                "dischargedOn": {
+                  "type": "string"
+                },
+                "roomNumber": {
+                  "type": "string"
+                },
+                "bedNumber": {
+                  "type": "string"
                 }
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Patient Admission Record Updated Successfully!",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/successResponse"
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid parameters error",
-              "schema": {
-                "$ref": "#/definitions/failureResponse"
-              }
-            },
-            "500": {
-              "description": "Could not fetch patient",
-              "schema": {
-                "$ref": "#/definitions/serverFailure"
               }
             }
           }
-        }
-      },
-      "/patient/admit/:{recordId}/delete": {
-        "put": {
-          "summary": "delete a patient admission record",
-          "description": "This route is to delete a patient admission record",
-          "produces": ["application/json"],
-          "consumes": ["application/json"],
-          "responses": {
-            "200": {
-              "description": "Patient Admission Record Deleted Successfully!",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/successResponse"
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid parameters error",
-              "schema": {
-                "$ref": "#/definitions/failureResponse"
-              }
-            },
-            "500": {
-              "description": "Could not fetch patient",
-              "schema": {
-                "$ref": "#/definitions/serverFailure"
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient Admission Record Updated Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
               }
             }
-          }
-        }
-      },
-      "/patient/admit/:{recordId}": {
-        "get": {
-          "summary": "get a patient admission record",
-          "description": "This route is to get a patient admission record",
-          "produces": ["application/json"],
-          "consumes": ["application/json"],
-          "responses": {
-            "200": {
-              "description": "Patient Admission Record fetched Successfully!",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/successResponse"
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid parameters error",
-              "schema": {
-                "$ref": "#/definitions/failureResponse"
-              }
-            },
-            "500": {
-              "description": "Could not fetch patient",
-              "schema": {
-                "$ref": "#/definitions/serverFailure"
-              }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
             }
           }
         }
       }
+    },
+    "/patient/admit/:{recordId}/delete": {
+      "put": {
+        "summary": "delete a patient admission record",
+        "description": "This route is to delete a patient admission record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient Admission Record Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/admit/:{recordId}": {
+      "get": {
+        "summary": "get a patient admission record",
+        "description": "This route is to get a patient admission record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient Admission Record fetched Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/lab/report/create": {
+      "post": {
+        "summary": "Create a patient lab report",
+        "description": "This route is to create a patient lab report",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "lab report details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "type": "string"
+                },
+                "testName": {
+                  "type": "string"
+                },
+                "isActive": {
+                  "type": "string"
+                },
+                "testValue": {
+                  "type": "string"
+                },
+                "minValue": {
+                  "type": "string"
+                },
+                "maxValue": {
+                  "type": "string"
+                },
+                "calUnit": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient Lab Report Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/lab/report/edit/:{reportId}": {
+      "patch": {
+        "summary": "Edit a patient lab report",
+        "description": "This route is to edit a patient lab report",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "lab report details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "testName": {
+                  "type": "string"
+                },
+                "isActive": {
+                  "type": "string"
+                },
+                "testValue": {
+                  "type": "string"
+                },
+                "minValue": {
+                  "type": "string"
+                },
+                "maxValue": {
+                  "type": "string"
+                },
+                "calUnit": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient Lab report Updated Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/lab/report/create": {
+      "post": {
+        "summary": "Create a patient lab report",
+        "description": "This route is to create a patient lab report",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "lab report details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId": {
+                  "type": "string"
+                },
+                "testName": {
+                  "type": "string"
+                },
+                "isActive": {
+                  "type": "string"
+                },
+                "testValue": {
+                  "type": "string"
+                },
+                "minValue": {
+                  "type": "string"
+                },
+                "maxValue": {
+                  "type": "string"
+                },
+                "calUnit": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patient Lab Report Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/lab/report/:{reportId}": {
+      "get": {
+        "summary": "get a patient lab report",
+        "description": "This route is to get a patient lab report",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient lab report fetched successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/lab/report/:{patientId}/all": {
+      "get": {
+        "summary": "get all  lab report",
+        "description": "This route is to get all lab reports for a patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient lab report fetched successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    }
   },
   "definitions": {
     "successResponse": {
