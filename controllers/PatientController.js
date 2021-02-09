@@ -27,7 +27,6 @@ class PatientController {
         newPatient
       );
     } catch (error) {
-      console.log("🚀 ~ file: PatientController.js ~ line 30 ~ PatientController ~ register ~ error", error)
       await transaction.rollback();
       return serverFailure(res, 'Could not register patient');
     }
@@ -56,12 +55,11 @@ class PatientController {
       if (!recordExist) return failureResponse(res, 'patient record not found', NOT_FOUND_CODE);
 
       const updatedPatientRecord = await updatePatientRecord(req.body, recordExist);
-      console.log("🚀 ~ file: PatientController.js ~ line 59 ~ PatientController ~ updatePatientRecord ~ updatedPatientRecord", updatedPatientRecord[1].dataValues)
       return successResponse(
         res,
         'Patient Record Updated Successfully!',
         OK_CODE,
-        updatedPatientRecord[1].dataValues
+        updatedPatientRecord[1]
       );
     } catch (error) {
       return serverFailure(res, 'Could not update admission record');
