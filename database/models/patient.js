@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     weight: DataTypes.STRING,
     bloodGroup: DataTypes.STRING,
     genotype: DataTypes.STRING,
+    occupation: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Patient',
