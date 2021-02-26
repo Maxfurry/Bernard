@@ -16,6 +16,45 @@
   "host": "localhost:3000",
   "basePath": "/api",
   "paths": {
+    "/login": {
+      "put": {
+        "summary": "login a patient",
+        "description": "patient login",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          }
+        }
+      }
+    },
     "/patient/auth/signup": {
       "post": {
         "summary": "Signup as a patient",
@@ -638,6 +677,189 @@
           },
           "500": {
             "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/admin/login": {
+      "post": {
+        "summary": "admin login route",
+        "description": "This route is to log an admin in",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Log in Successful!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not login admin",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/admin/employee/create": {
+      "post": {
+        "summary": "admin creates employee",
+        "description": "Only Admins can create an employee",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "firstname": {
+                  "type": "string"
+                },
+                "lastname": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "phoneNumber": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not create employee",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/admin/employee/update/:{employeeDetailsId}": {
+      "put": {
+        "summary": "Employee can update their profile",
+        "description": "Only Employees can update their profile",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstname": {
+                  "type": "string"
+                },
+                "lastname": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "phoneNumber": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee Details Updated Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update employee details",
             "schema": {
               "$ref": "#/definitions/serverFailure"
             }
