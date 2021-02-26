@@ -62,6 +62,9 @@
                 },
                 "genotype": {
                   "type": "string"
+                },
+                "occupation": {
+                  "type": "string"
                 }
               }
             }
@@ -251,6 +254,9 @@
                   "type": "string"
                 },
                 "genotype": {
+                  "type": "string"
+                },
+                "occupation": {
                   "type": "string"
                 }
               }

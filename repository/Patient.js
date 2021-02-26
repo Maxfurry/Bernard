@@ -115,6 +115,7 @@ class Patient {
     const weight = field.weight || previous_record.weight;
     const bloodGroup = field.bloodGroup || previous_record.bloodGroup;
     const genotype = field.genotype || previous_record.genotype;
+    const occupation = field.occupation || previous_record.occupation;
 
     return await patientModel.update(
       {
@@ -126,7 +127,8 @@ class Patient {
         height,
         weight,
         bloodGroup,
-        genotype
+        genotype,
+        occupation
       },
       {
         where: { id: previous_record.id }, returning: true
