@@ -2,34 +2,30 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('PatientLabReport', {
+    await queryInterface.createTable('EmployeeDetails', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      testName: {
-        allowNull: false,
+      firstname: {
         type: Sequelize.STRING,
+        unique: false
       },
-      isActive: {
-        type: Sequelize.STRING,
-      },
-      testValue: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-       minValue: {
-        type: Sequelize.STRING,
-      },
-      maxValue: {
+      lastname: {
         type: Sequelize.STRING
       },
-      comment: {
+      dateOfBirth: {
+        type: Sequelize.DATE
+      },
+      gender: {
         type: Sequelize.STRING
       },
-      calUnit: {
+      phoneNumber: {
+        type: Sequelize.STRING
+      },
+      address: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -40,11 +36,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      patientId: {
+      employeeId: {
         type: Sequelize.DataTypes.UUID,
         references: {
           model: {
-            tableName: 'Patients',
+            tableName: 'Employee',
           },
           key: 'id'
         },
@@ -55,6 +51,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('PatientLabReport');
+    await queryInterface.dropTable('EmployeeDetails');
   }
 };
