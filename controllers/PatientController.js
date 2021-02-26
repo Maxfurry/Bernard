@@ -62,7 +62,7 @@ class PatientController {
         updatedPatientRecord[1]
       );
     } catch (error) {
-      return serverFailure(res, 'Could not update admission record');
+      return serverFailure(res, 'Could not update patient record');
     }
   }
 
