@@ -24,10 +24,6 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: false
         },
-        userType: {
-          type: DataTypes.STRING,
-          allowNull: false
-        },
       }, {
         sequelize,
         modelName: 'Admin',
