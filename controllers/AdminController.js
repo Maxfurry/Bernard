@@ -5,7 +5,7 @@ const {
     OK_CODE, NOT_FOUND_CODE, RESOURCE_CREATED_CODE
 } = require('../constants');
 const validateParms = require('../middleware/AdminController.validation');
-const { getAdminByEmail, getEmployeeByEmail, updateEmployeeDetail , getEmployeeDetailsById, create } = require('../repository/Admin');
+const { getAdminByEmail, getEmployeeByEmail, updateEmployeeDetail , getEmployeeDetailsById, createEmployeeFn } = require('../repository/Admin');
 const { idValidation } = require('../middleware/generalValidation');
 
 class AdminController {
@@ -60,7 +60,7 @@ class AdminController {
             const employeeExist = await getEmployeeByEmail({ email: req.body.email });
             if (employeeExist) return failureResponse(res, 'Email already exist', NOT_FOUND_CODE);
 
-            const newCreatedEmployee = await create(req.body, { transaction });
+            const newCreatedEmployee = await createEmployeeFn(req.body, { transaction });
             await transaction.commit();
             return successResponse(
                 res,
@@ -90,6 +90,9 @@ class AdminController {
         const validation = idValidation({ id: req.params.employeeDetailsId });
         if (validation.error) return failureResponse(res, 'employeeId is required or Invalid');
 
+        const specialityValidation = validateParms.validateSpeciality({ speciality: req.body.speciality });
+        if (specialityValidation.error) return failureResponse(res, specialityValidation.error.message);
+
         try {
             const recordExist = await getEmployeeDetailsById(req.params);
             if (!recordExist) return failureResponse(res, 'employee Details Id record not found', NOT_FOUND_CODE);
@@ -102,7 +105,6 @@ class AdminController {
                 updatedEmployeeDetails[1]
             );
         } catch (error) {
-            console.log({error})
             return serverFailure(res, 'Could not update employee details');
         }
     }

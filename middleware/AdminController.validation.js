@@ -9,7 +9,7 @@ const validateParms = {
         firstname: Joi.string().min(2).max(150),
         lastname: Joi.string().min(2).max(150),
         dateOfBirth: Joi.string().min(2).max(150),
-        role: Joi.string().min(2).max(150),
+        speciality: Joi.string().min(2).max(150).valid('doctor').valid('nurse').valid('lab technician').valid('radiologist'),
         gender: Joi.string().min(2).max(50),
         phoneNumber: Joi.string().min(2).max(150),
         address: Joi.string().min(2).max(150),
@@ -19,6 +19,15 @@ const validateParms = {
       email, password, firstname, lastName, dateOfBirth, gender, phoneNumber, address
     } = obj);
   },
+  validateSpeciality: (obj)=>{
+    const JoiSchema = Joi.object({
+      speciality: Joi.string().min(2).max(150).valid('doctor').valid('nurse').valid('lab technician').valid('radiologist'),
+  });
+
+  return JoiSchema.validate({
+    speciality
+  } = obj);
+  }
 };
 
 module.exports = validateParms;

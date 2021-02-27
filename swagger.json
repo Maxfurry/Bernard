@@ -737,7 +737,7 @@
     "/admin/employee/create": {
       "post": {
         "summary": "admin creates employee",
-        "description": "Only Admins can create an employee",
+        "description": "NOTE: role allows for only these values : doctor, nurse, lab technician, radiologist",
         "produces": ["application/json"],
         "consumes": ["application/json"],
         "parameters": [
@@ -762,7 +762,7 @@
                   "type": "string"
                 },
                 "role": {
-                  "type": "string"
+                  "type": "doctor || nurse || lab technician || radiologist"
                 },
                 "dateOfBirth": {
                   "type": "string"

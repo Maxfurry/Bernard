@@ -2,13 +2,14 @@ const { Op } = require('sequelize');
 const { Admin: adminModel, Employee: employeeModel, EmployeeDetails:  employeeDetailsModel} = require('../database/models');
 
 class Admin {
-  static async create(field = {}, transaction = {}) {
-    const { email, role, password } = field;
+  static async createEmployeeFn(field = {}, transaction = {}) {
+    const { email, speciality ,password } = field;
+    const upperCaseSpeciality = speciality.toUpperCase();
     const employee = await employeeModel.create(
       {
         email,
         password,
-        role
+        upperCaseSpeciality
       },
       transaction
     );
