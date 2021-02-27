@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
-      role: {
+      speciality: {
         type: Sequelize.STRING
       },
       password: {
