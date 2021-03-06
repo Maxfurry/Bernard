@@ -8,7 +8,6 @@
     "start": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "npx sequelize db:migrate",
-    "generate:migration": "npx sequelize migration:generate --name create-employee-details",
     "lint": "npx eslint './**/*.js' --ext .js"
   },
   "husky": {

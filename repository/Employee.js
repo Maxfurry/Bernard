@@ -1,6 +1,9 @@
-const bcrypt = require('bcrypt');
-const { Employee: employeeModel, EmployeeDetails: employeeDetailsModel } = require('../database/models');
-const employeeDetails = require('../database/models/employeeDetails');
+const bcrypt = require("bcrypt");
+const {
+  Employee: employeeModel,
+  EmployeeDetails: employeeDetailsModel,
+} = require("../database/models");
+const employeeDetails = require("../database/models/employeeDetails");
 
 class Employee {
   static async createEmployeeFn(field = {}, transaction = {}) {
@@ -13,8 +16,8 @@ class Employee {
       {
         email,
         password: hashedPassword,
-        role: 'EMPLOYEE',
-        specialty: upperCaseSpecialty
+        role: "EMPLOYEE",
+        specialty: upperCaseSpecialty,
       },
       transaction
     );
@@ -29,15 +32,15 @@ class Employee {
     );
   }
 
-
   static async getEmployeeByEmail(field = {}, transaction = {}) {
     const { email } = field;
     return employeeModel.findOne(
       {
         where: {
-          email
-        }
-      }, transaction
+          email,
+        },
+      },
+      transaction
     );
   }
 
@@ -47,13 +50,18 @@ class Employee {
     return employeeDetailsModel.findOne(
       {
         where: {
-          id: employeeDetailsId
+          id: employeeDetailsId,
         },
-      }, transaction
+      },
+      transaction
     );
   }
 
-  static async updateEmployeeDetail(field = {}, previous_record = {}, transaction = {}) {
+  static async updateEmployeeDetail(
+    field = {},
+    previous_record = {},
+    transaction = {}
+  ) {
     const firstName = field.firstName || previous_record.firstName;
     const lastName = field.lastName || previous_record.lastName;
     const dateOfBirth = field.dateOfBirth || previous_record.dateOfBirth;
@@ -69,10 +77,11 @@ class Employee {
         gender,
         phoneNumber,
         address,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
       {
-        where: { id: previous_record.id }, returning: true
+        where: { id: previous_record.id },
+        returning: true,
       },
       transaction
     );
