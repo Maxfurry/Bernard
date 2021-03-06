@@ -13,11 +13,11 @@ module.exports = {
 
    return queryInterface.sequelize.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";').then(async ()=> {
     const saltRounds = 10;
-    const hashedPassword = bcrypt.hashSync('test1234', saltRounds); // <<<---- TYPE THE PASSWORD HERE
+    const hashedPassword = bcrypt.hashSync('admin', saltRounds); // <<<---- TYPE THE PASSWORD HERE
 
     return await queryInterface.bulkInsert('Employee', [{
        id: Sequelize.literal('uuid_generate_v4()'),
-       email: 'test@gmail.com',
+       email: 'admin@admin.com',
        password: hashedPassword, //NOTE: this password should be in .env file
        role: 'ADMIN',
        createdAt: new Date(),
