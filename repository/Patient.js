@@ -1,21 +1,25 @@
-const { Op } = require('sequelize');
-const bcrypt = require('bcrypt');
+const { Op } = require("sequelize");
+const bcrypt = require("bcrypt");
 
-const { Patient: patientModel, User: userModel, Admission: admissionModel } = require('../database/models');
+const {
+  Patient: patientModel,
+  User: userModel,
+  Admission: admissionModel,
+} = require("../database/models");
 
 class Patient {
   static async create(field = {}, transaction = {}) {
     const { email, password } = field;
 
-     //  hash the incoming password
-     const saltRounds = 10;
-     const hashedPassword = bcrypt.hashSync(password, saltRounds);
+    //  hash the incoming password
+    const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
     const user = await userModel.create(
       {
         email,
         password: hashedPassword,
-        userType: 'Patient',
+        userType: "Patient",
       },
       transaction
     );
@@ -31,88 +35,107 @@ class Patient {
 
   /**
    * @description This controller is used to get a patient by their Id
-  */
+   */
   static async getPatient(field = {}, transaction = {}) {
     const { id } = field;
     return patientModel.findOne(
       {
         where: {
-          id
+          id,
         },
         include: [
           {
             model: userModel,
-            as: 'login_details',
-            attributes: ['email']
-          }
-        ]
-      }, transaction
+            as: "login_details",
+            attributes: ["email"],
+          },
+        ],
+      },
+      transaction
     );
   }
 
-   /**
+  /**
    * @description This controller is used to get a patient by their Id
-  */
- static async getPatientByEmail(field = {}, transaction = {}) {
-  const { email } = field;
-  return userModel.findOne(
-    {
-      where: {
-        email
+   */
+  static async getPatientByEmail(field = {}, transaction = {}) {
+    const { email } = field;
+    return userModel.findOne(
+      {
+        where: {
+          email,
+        },
       },
-    }, transaction
-  );
-}
+      transaction
+    );
+  }
 
-  static async searchForPatient(name = '', transaction = {}) {
-    return patientModel.findAll({
-      where: {
-        [Op.or]: {
-          firstName: {
-            [Op.iLike]: `%${name}%`
+  static async searchForPatient(name = "", transaction = {}) {
+    return patientModel.findAll(
+      {
+        where: {
+          [Op.or]: {
+            firstName: {
+              [Op.iLike]: `%${name}%`,
+            },
+            lastName: {
+              [Op.iLike]: `%${name}%`,
+            },
           },
-          lastName: {
-            [Op.iLike]: `%${name}%`
-          }
-        }
+        },
+        include: [
+          {
+            model: userModel,
+            as: "login_details",
+            attributes: ["email"],
+          },
+        ],
       },
-      include: [
-        {
-          model: userModel,
-          as: 'login_details',
-          attributes: ['email']
-        }
-      ]
-    }, transaction);
+      transaction
+    );
   }
 
   static async getAllPatient(query, transaction = {}) {
-    return patientModel.findAll({
-      limit: query.count,
-      offset: query.start,
-      include: [
-        {
-          model: userModel,
-          as: 'login_details',
-          attributes: {
-            exclude: ['password']
-          }
-        }
-      ]
-    }, transaction);
-  }
-
-  static async getAllAdmissionRecordForAPatient(req, { start, count }, transaction = {}) {
-    return admissionModel.findAll({
-      limit: count,
-      offset: start,
-      where: {
-        patientId: req.patientId
+    return patientModel.findAll(
+      {
+        limit: query.count,
+        offset: query.start,
+        include: [
+          {
+            model: userModel,
+            as: "login_details",
+            attributes: {
+              exclude: ["password"],
+            },
+          },
+        ],
       },
-    }, transaction);
+      transaction
+    );
   }
 
-  static async updatePatientRecord(field = {}, previous_record = {}, transaction = {}) {
+  static async getAllAdmissionRecordForAPatient(
+    req,
+    { start, count },
+    transaction = {}
+  ) {
+    return admissionModel.findAll(
+      {
+        limit: count,
+        offset: start,
+        where: {
+          patientId: req.patientId,
+        },
+      },
+      transaction
+    );
+  }
+
+  static async updatePatientRecord(
+    field = {},
+    previous_record = {},
+    transaction = {}
+  ) {
     const firstName = field.firstName || previous_record.firstName;
     const lastName = field.lastName || previous_record.lastName;
     const dateOfBirth = field.dateOfBirth || previous_record.dateOfBirth;
@@ -135,10 +158,11 @@ class Patient {
         weight,
         bloodGroup,
         genotype,
-        occupation
+        occupation,
       },
       {
-        where: { id: previous_record.id }, returning: true
+        where: { id: previous_record.id },
+        returning: true,
       },
       transaction
     );
