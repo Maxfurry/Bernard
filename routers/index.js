@@ -4,12 +4,13 @@ const AuthRouter = require('./AuthRouter');
 const PatientRouter = require('./PatientRouter');
 const AdmitRouter = require('./AdmissionRouter');
 const PatientLabReportRouter = require('./LaboratoryRouter');
-const AdminRouter = require('./AdminRouter');
+const EmployeeRouter = require('./EmployeeRouter');
+
 
 router.use('/auth', AuthRouter);
 router.use('/patient', PatientRouter);
 router.use('/patient/admit', AdmitRouter);
 router.use('/lab/report', PatientLabReportRouter);
-router.use('/admin', AdminRouter);
+router.use('/employee', EmployeeRouter);
 
 module.exports = router;

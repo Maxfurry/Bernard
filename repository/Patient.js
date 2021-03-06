@@ -1,13 +1,20 @@
 const { Op } = require('sequelize');
+const bcrypt = require('bcrypt');
+
 const { Patient: patientModel, User: userModel, Admission: admissionModel } = require('../database/models');
 
 class Patient {
   static async create(field = {}, transaction = {}) {
     const { email, password } = field;
+
+     //  hash the incoming password
+     const saltRounds = 10;
+     const hashedPassword = bcrypt.hashSync(password, saltRounds);
+
     const user = await userModel.create(
       {
         email,
-        password,
+        password: hashedPassword,
         userType: 'Patient',
       },
       transaction
