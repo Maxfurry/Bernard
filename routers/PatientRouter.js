@@ -1,19 +1,19 @@
 const router = require('express').Router();
 
 const PatientController = require('../controllers/PatientController');
+const checkToken = require('../middleware/checkToken');
 
-router.post('/auth/signup', PatientController.register);
 
 // to search for a patient
-router.get('/search', PatientController.searchForPatient);
+router.get('/search', checkToken, PatientController.searchForPatient);
 
 // to get a patient by their Id
-router.get('/profile/:id', PatientController.getPatientById);
+router.get('/profile/:id', checkToken, PatientController.getPatientById);
 
-router.put('/profile/:patientId/edit', PatientController.updatePatientRecord);
+router.put('/profile/:patientId/edit', checkToken, PatientController.updatePatientRecord);
 
 // get all patients
-router.get('/all', PatientController.getAllPatients);
+router.get('/all', checkToken, PatientController.getAllPatients);
 
-router.get('/records/:patientId', PatientController.getAllAdmissionRecordsForAPatientController);
+router.get('/records/:patientId', checkToken, PatientController.getAllAdmissionRecordsForAPatientController);
 module.exports = router;
