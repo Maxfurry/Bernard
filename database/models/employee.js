@@ -31,7 +31,10 @@ const {
         type: DataTypes.STRING,
         allowNull: false
       },
-      speciality: {
+      specialty: {
+        type: DataTypes.STRING,
+      },
+      role: {
         type: DataTypes.STRING,
       }
     }, {
