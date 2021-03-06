@@ -16,13 +16,17 @@
   "host": "localhost:3000",
   "basePath": "/api",
   "paths": {
-    "/login": {
-      "put": {
+    "/auth/login": {
+      "post": {
         "summary": "login a patient",
         "description": "patient login",
         "produces": ["application/json"],
         "parameters": [
           {
+            "in": "body",
+            "name": "body",
+            "description": "patient object",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
@@ -55,7 +59,7 @@
         }
       }
     },
-    "/patient/auth/signup": {
+    "/auth/signup": {
       "post": {
         "summary": "Signup as a patient",
         "description": "To signup as a patient",
@@ -684,17 +688,17 @@
         }
       }
     },
-    "/admin/login": {
+    "/employee/login": {
       "post": {
-        "summary": "admin login route",
-        "description": "This route is to log an admin in",
+        "summary": "admins and employee login route",
+        "description": "This route can log in an admin and an employee",
         "produces": ["application/json"],
         "consumes": ["application/json"],
         "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "patient details",
+            "description": "patient or admin details",
             "required": true,
             "schema": {
               "type": "object",
@@ -734,10 +738,10 @@
         }
       }
     },
-    "/admin/employee/create": {
+    "/employee/admin/create": {
       "post": {
-        "summary": "admin creates employee",
-        "description": "NOTE: role allows for only these values : doctor, nurse, lab technician, radiologist",
+        "summary": "admin creates employee, Only Admin can access this route",
+        "description": "**NOTE: specialty allows for only these values : doctor, nurse, lab technician, radiologist",
         "produces": ["application/json"],
         "consumes": ["application/json"],
         "parameters": [
@@ -761,8 +765,8 @@
                 "lastname": {
                   "type": "string"
                 },
-                "role": {
-                  "type": "doctor || nurse || lab technician || radiologist"
+                "specialty": {
+                  "type": "string"
                 },
                 "dateOfBirth": {
                   "type": "string"
@@ -805,7 +809,7 @@
         }
       }
     },
-    "/admin/employee/update/:{employeeDetailsId}": {
+    "/employee/details/update/:{employeeId}": {
       "put": {
         "summary": "Employee can update their profile",
         "description": "Only Employees can update their profile",
