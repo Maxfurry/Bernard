@@ -877,9 +877,56 @@
         "description": "This route is to get all employees",
         "produces": ["application/json"],
         "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "fetched all empolyee successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/verify/token": {
+      "post": {
+        "summary": "verify a token",
+        "description": "This route can verify all jwt tokens",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "valid",
             "schema": {
               "type": "array",
               "items": {
