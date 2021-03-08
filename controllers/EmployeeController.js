@@ -132,6 +132,9 @@ class EmployeeController {
 * @description get all patients
 */
     static async getAllEmployee(req, res) {
+        const { role } = req.user;
+        if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+
         try {
             const allEmployee = await getAllEmployeeData();
             return successResponse(
