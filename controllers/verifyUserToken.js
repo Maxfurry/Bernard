@@ -18,7 +18,7 @@ class verifyUserToken {
                 }
             });
         } catch (error) {
-            return serverFailure(res, 'Could verify user');
+            return serverFailure(res, 'Could not verify user');
         }
     }
 
