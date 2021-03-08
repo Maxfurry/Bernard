@@ -8,6 +8,8 @@ router.post('/login', EmployeeController.Login);
 // to create an employee
 router.post('/admin/create', checkToken, EmployeeController.createEmployee);
 
+router.get('/all', checkToken, EmployeeController.getAllEmployee);
+
 // to update an employee details
 router.put('/details/update/:employeeDetailsId', checkToken, EmployeeController.updateEmployeeDetails);
 

@@ -7,7 +7,7 @@ const {
 } = require('../constants');
 const validateParms = require('../middleware/EmployeeController.validation');
 const { login: validatelogin } = require('../middleware/AuthController.validation');
-const { getEmployeeByEmail, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn } = require('../repository/Employee');
+const { getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
 require('dotenv').config();
 
@@ -105,7 +105,7 @@ class EmployeeController {
     phoneNumber
     address
 * }
-* @description update a patient record by patient Id
+* @description update an employee record
 */
     static async updateEmployeeDetails(req, res) {
         const validation = idValidation({ id: req.params.employeeDetailsId });
@@ -124,6 +124,27 @@ class EmployeeController {
             );
         } catch (error) {
             return serverFailure(res, 'Could not update employee details');
+        }
+    }
+
+    /**
+* @param req.query -- pagination query (start & count)
+* @description get all patients
+*/
+    static async getAllEmployee(req, res) {
+        const { role } = req.user;
+        if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+
+        try {
+            const allEmployee = await getAllEmployeeData();
+            return successResponse(
+                res,
+                'fetched all empolyee successfully',
+                OK_CODE,
+                allEmployee
+            );
+        } catch (error) {
+            return serverFailure(res, 'Could not fetch patient');
         }
     }
 }
