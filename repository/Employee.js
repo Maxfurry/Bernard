@@ -77,6 +77,17 @@ class Employee {
       transaction
     );
   }
+
+  static async getAllEmployeeData(query, transaction = {}) {
+    return employeeModel.findAll({
+      include: [
+        {
+          model: employeeDetailsModel,
+          as: 'employeeDetails',
+        }
+      ]
+    }, transaction);
+  }
 }
 
 module.exports = Employee;
