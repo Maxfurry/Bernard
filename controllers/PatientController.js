@@ -22,7 +22,7 @@ class PatientController {
       const newPatient = await create(req.body, { transaction });
       await transaction.commit();
       return jwt.sign({
-        email: newPatient.email,
+        user: newPatient,
         role: 'patient'
       }, process.env.SECRET_JWT_KEY, { expiresIn: '30d' }, async (err, token) => {
         if (err) {
