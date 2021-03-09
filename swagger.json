@@ -258,6 +258,51 @@
         }
       }
     },
+    "/patient/records/{patientId}": {
+      "get": {
+        "summary": "Fetch all Addmission Records for a patient",
+        "description": "Returns all addmission record for a patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "start",
+            "description": "start is where the pagination starts default is 0",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "count",
+            "description": "count is how many results it returns default is 20",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all admission records for a patient successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
     "/patient/profile/{:id}/edit": {
       "put": {
         "summary": "get a patient proflle by Id",
@@ -919,9 +964,9 @@
       }
     },
     "/verify/token": {
-      "post": {
+      "get": {
         "summary": "verify a token",
-        "description": "This route can verify all jwt tokens",
+        "description": "This route can verify all jwt tokens and returns the user data",
         "produces": ["application/json"],
         "consumes": ["application/json"],
         "responses": {
