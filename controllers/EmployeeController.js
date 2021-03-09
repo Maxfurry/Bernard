@@ -28,7 +28,7 @@ class EmployeeController {
 
                 if (match) {
                     return jwt.sign({
-                        email: recordExist.email,
+                        user: recordExist,
                         role: recordExist.role,
                         specialty: recordExist.specialty
                     }, process.env.SECRET_JWT_KEY, { expiresIn: '30d' }, async (err, token) => {
