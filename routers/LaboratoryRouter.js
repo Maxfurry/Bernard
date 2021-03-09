@@ -4,7 +4,7 @@ const LaboratoryController = require('../controllers/LaboratoryController');
 const checkToken = require('../middleware/checkToken');
 
 router.post('/create', checkToken, LaboratoryController.createLabReport);
-router.patch('/edit/:reportId',checkToken, LaboratoryController.updatePatientLabReport);
+router.put('/edit/:reportId',checkToken, LaboratoryController.updatePatientLabReport);
 router.get('/:reportId',checkToken, LaboratoryController.getPatientLabReportById)
 router.get('/:patientId/all',checkToken, LaboratoryController.getAllLabReportsForAPatientController)
 
