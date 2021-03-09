@@ -17,10 +17,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      testName: {
-        type: Sequelize.STRING,
-         allowNull: false
-      },
       comment: Sequelize.STRING,
       createdAt: {
         allowNull: false,
