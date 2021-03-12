@@ -25,7 +25,20 @@ class AuthController {
 
         if (match) {
           return jwt.sign({
-            user: recordExist,
+            user: {
+              id: recordExist.id,
+              email: recordExist.email,
+              firstname: recordExist.firstname,
+              lastname: recordExist.lastname,
+              dateOfBirth: recordExist.dateOfBirth,
+              gender: recordExist.gender,
+              phoneNumber: recordExist.phoneNumber,
+              height: recordExist.height,
+              weight: recordExist.weight,
+              bloodGroup:  recordExist.bloodGroup,
+              genotype: recordExist.genotype,
+              occupation: recordExist.occupation
+            },
             role: 'PATIENT'
           }, process.env.SECRET_JWT_KEY, { expiresIn: '30d' }, async (err, token) => {
             if (err) {

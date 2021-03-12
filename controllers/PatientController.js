@@ -36,7 +36,7 @@ class PatientController {
           genotype: newPatient.genotype,
           occupation: newPatient.occupation
         },
-        role: 'patient'
+        role: 'PATIENT'
       }, process.env.SECRET_JWT_KEY, { expiresIn: '30d' }, async (err, token) => {
         if (err) {
           return res.status(403).send(err);
