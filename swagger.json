@@ -108,6 +108,9 @@
                 },
                 "occupation": {
                   "type": "string"
+                },
+                "address": {
+                  "type": "string"
                 }
               }
             }
@@ -225,10 +228,41 @@
         }
       }
     },
+    "/patient/profile/me": {
+      "get": {
+        "summary": "returns full profile details",
+        "description": "it is a protected route and it needs a patient token, and it returns all info about the patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient details fetched successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
     "/patient/profile/:{id}": {
       "get": {
         "summary": "get a patient proflle by Id",
-        "description": "Fetch a patient by id",
+        "description": "ID - the unique uuid from the patient details, you can find the ID in the id column when the user login or signup ",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -261,7 +295,7 @@
     "/patient/records/{patientId}": {
       "get": {
         "summary": "Fetch all Addmission Records for a patient",
-        "description": "Returns all addmission record for a patient",
+        "description": "patientId - it is the patient unqiue uuid from the patient's id column, you can get the patientId when the user login or signup",
         "produces": ["application/json"],
         "consumes": ["application/json"],
         "parameters": [
@@ -306,7 +340,7 @@
     "/patient/profile/{:id}/edit": {
       "put": {
         "summary": "get a patient proflle by Id",
-        "description": "Fetch a patient by id",
+        "description": "id - it is the patient unqiue uuid from the patient's id column, you can get the patientId when the user login or signup",
         "produces": ["application/json"],
         "parameters": [
           {
@@ -345,6 +379,9 @@
                   "type": "string"
                 },
                 "occupation": {
+                  "type": "string"
+                },
+                "address": {
                   "type": "string"
                 }
               }
@@ -847,6 +884,37 @@
           },
           "500": {
             "description": "Could not create employee",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/admin/patient/delete/:{patientId}": {
+      "delete": {
+        "summary": "Note: Only admins can delete a patient",
+        "description": "patientId - is the unique uuid in the id column",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Patient Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
             "schema": {
               "$ref": "#/definitions/serverFailure"
             }
