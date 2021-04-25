@@ -7,8 +7,11 @@ const checkToken = require('../middleware/checkToken');
 // to search for a patient
 router.get('/search', checkToken, PatientController.searchForPatient);
 
+router.get('/profile/me', checkToken, PatientController.getPatientDetailsByToken);
+
 // to get a patient by their Id
 router.get('/profile/:id', checkToken, PatientController.getPatientById);
+
 
 router.put('/profile/:patientId/edit', checkToken, PatientController.updatePatientRecord);
 
