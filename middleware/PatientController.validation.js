@@ -16,8 +16,9 @@ const validateParms = {
       bloodGroup: Joi.string().min(1).max(10),
       genotype: Joi.string().min(2).max(10),
       occupation: Joi.string().min(2).required(),
+      address: Joi.string(),
     });
-    return JoiSchema.validate({ email, password, firstName, lastName, dateOfBirth, gender, phoneNumber, height, weight, bloodGroup, genotype, occupation } = obj);
+    return JoiSchema.validate({ email, address, password, firstName, lastName, dateOfBirth, gender, phoneNumber, height, weight, bloodGroup, genotype, occupation } = obj);
   },
   searchForPatient: (obj) => {
     const JoiSchema = Joi.object({
