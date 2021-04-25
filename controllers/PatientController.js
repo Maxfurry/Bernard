@@ -47,7 +47,8 @@ class PatientController {
           'Patient Registration Successfully!',
           RESOURCE_CREATED_CODE,
           {
-            newPatient,
+            user: newPatient,
+            role: 'patient',
             token : token
           }
         );
@@ -113,6 +114,26 @@ class PatientController {
     return serverFailure(res, 'Could not fetch patient');
   }
 }
+
+  /**
+   * @param req.params -  id
+   * @description get a patient by Id
+   */
+   static async getPatientDetailsByToken(req, res) {
+     const id = req.user.user.id;
+    try {
+      const singlePatient = await getPatient({id});
+  
+      return successResponse(
+        res,
+        'Patient details fetched successfully',
+        OK_CODE,
+        singlePatient
+      );
+    } catch (error) {
+      return serverFailure(res, 'Could not fetch patient');
+    }
+  }
 
   /**
  * @param req.query firstname, lastname
