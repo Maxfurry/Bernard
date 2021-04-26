@@ -74,17 +74,6 @@ class Patient {
       },
       transaction
     );
-
-    // const patientDetails = await patientModel.findOne({
-    //   where: {
-    //      userId: userDetails.id
-    //   }
-    // })
-
-    // return {
-    //   ...userDetails,
-    //   ...patientDetails
-    // }
   }
 
   static async searchForPatient(name = "", transaction = {}) {
