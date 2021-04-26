@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.hasOne(models.Patient, {
         foreignKey: 'userId',
-        as: 'login_details',
+        as: 'patient',
         onDelete: 'CASCADE',
       });
     }

@@ -9,6 +9,7 @@ const validateParms = require('../middleware/EmployeeController.validation');
 const { login: validatelogin } = require('../middleware/AuthController.validation');
 const { getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
+const { deletePatient, getPatient } = require('../repository/Patient');
 require('dotenv').config();
 
 class EmployeeController {
@@ -152,6 +153,30 @@ class EmployeeController {
             return serverFailure(res, 'Could not fetch patient');
         }
     }
+
+      /**
+* @param req.params -- patientId
+* @description delete a patient, only admins can do that
+*/
+static async deletePatientController(req, res) {
+      const { role } = req.user;
+    const validation = idValidation({ id: req.params.patientId });
+    if (validation.error) return failureResponse(res, 'patientId is required or Invalid');
+    if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+    
+    try {
+      const singlePatient = await getPatient({id: req.params.patientId});
+      if(!singlePatient)  if (!recordExist) return failureResponse(res, 'patient record not found', NOT_FOUND_CODE);
+      await deletePatient(req.params);
+      return successResponse(
+        res,
+        'Patient Deleted Successfully!',
+        OK_CODE
+      );
+    } catch (error) {
+      return serverFailure(res, 'Could not delete patient');
+    }
+  }
 }
 
 module.exports = EmployeeController;

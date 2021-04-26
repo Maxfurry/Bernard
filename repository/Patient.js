@@ -60,11 +60,17 @@ class Patient {
    */
   static async getPatientByEmail(field = {}, transaction = {}) {
     const { email } = field;
-    return userModel.findOne(
+    return  await userModel.findOne(
       {
         where: {
           email,
         },
+        include: [
+          {
+            model: patientModel,
+            as: "patient"
+          },
+        ],
       },
       transaction
     );
@@ -146,6 +152,7 @@ class Patient {
     const bloodGroup = field.bloodGroup || previous_record.bloodGroup;
     const genotype = field.genotype || previous_record.genotype;
     const occupation = field.occupation || previous_record.occupation;
+    const address = field.address || previous_record.address;
 
     return await patientModel.update(
       {
@@ -159,11 +166,19 @@ class Patient {
         bloodGroup,
         genotype,
         occupation,
+        address
       },
       {
         where: { id: previous_record.id },
         returning: true,
       },
+      transaction
+    );
+  }
+
+  static async deletePatient(field = {}, transaction = {}) {
+    return await patientModel.destroy(
+      { returning: true, where: { id: field.patientId } },
       transaction
     );
   }
