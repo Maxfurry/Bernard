@@ -1055,7 +1055,7 @@
         ],
         "responses": {
           "200": {
-            "description": "fetched all empolyee successfully",
+            "description": "fetched profile successfully",
             "schema": {
               "type": "array",
               "items": {
