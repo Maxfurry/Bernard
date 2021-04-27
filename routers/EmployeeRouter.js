@@ -12,6 +12,8 @@ router.delete('/admin/patient/delete/:patientId', checkToken, EmployeeController
 
 router.get('/all', checkToken, EmployeeController.getAllEmployee);
 
+router.get('/profile/me', checkToken, EmployeeController.getEmployeeProfile);
+
 // to update an employee details
 router.put('/details/update/:employeeDetailsId', checkToken, EmployeeController.updateEmployeeDetails);
 
