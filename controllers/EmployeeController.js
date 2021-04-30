@@ -31,7 +31,6 @@ class EmployeeController {
                     return jwt.sign({
                         user: {
                             email : recordExist.email,
-                            password: recordExist.password,
                             firstname: recordExist.firstname,
                             lastname: recordExist.lastname
                         },
@@ -177,6 +176,30 @@ static async deletePatientController(req, res) {
       return serverFailure(res, 'Could not delete patient');
     }
   }
+
+      /**
+* @param 
+* @description get employee profile
+*/
+static async getEmployeeProfile(req, res) {
+    const { user } = req.user;
+    
+    try {
+        const profile = await getEmployeeByEmail({email : user.email});
+        const profileDetails = await getEmployeeDetailsById({employeeDetailsId: profile.id})
+        return successResponse(
+            res,
+            'fetched profile successfully',
+            OK_CODE,
+            {
+                profile,
+                profileDetails : profileDetails ||  'no data'
+            }
+        );
+    } catch (error) {
+        return serverFailure(res, 'Could not fetch patient');
+    }
+}
 }
 
 module.exports = EmployeeController;
