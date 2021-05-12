@@ -46,7 +46,7 @@ class Addmission {
 
   static async getAdmissionRecord(field = {}, transaction = {}) {
     const { recordId } = field;
-    return admissionModel.findOne(
+    return admissionModel.findAll(
       {
         where: {
           patientId: recordId
