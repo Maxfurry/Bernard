@@ -7,7 +7,7 @@ const {
 } = require('../constants');
 const validateParms = require('../middleware/EmployeeController.validation');
 const { login: validatelogin } = require('../middleware/AuthController.validation');
-const { getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn } = require('../repository/Employee');
+const { getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, updatePrescription, createTimelineFn } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
 const { deletePatient, getPatient } = require('../repository/Patient');
 require('dotenv').config();
@@ -200,6 +200,90 @@ static async getEmployeeProfile(req, res) {
         return serverFailure(res, 'Could not fetch patient');
     }
 }
+
+ /**
+     * @param req.body -  {
+     *   drugName,
+        dosage,
+        drugType,
+        startDate,
+        period,
+        note,
+     * }
+     * @description create a prescription
+     */
+        static async createPrescription(req, res) {
+            const { role } = req.user;
+            const transaction = await sequelize.transaction();
+            const validation = validateParms.createPrescription(req.body);
+            if (validation.error) return failureResponse(res, validation.error);
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+                const patientExist = await getPatient({ id: req.body.patientId });
+                if (!patientExist) return failureResponse(res, 'Patient does not exist', NOT_FOUND_CODE);
+    
+                const newCreatedPrescription = await createPrescriptionFn(req.body , { transaction });
+                await transaction.commit();
+                return successResponse(
+                    res,
+                    'Prescription Created Successfully!',
+                    RESOURCE_CREATED_CODE,
+                    newCreatedPrescription
+                );
+            } catch (error) {
+                await transaction.rollback();
+                return serverFailure(res, 'Could not create prescription');
+            }
+        }
+
+        static async updatePrescription(req, res) {
+            const { role } = req.user;
+            const validation = idValidation({ id: req.params.prescriptionId });
+            if (validation.error) return failureResponse(res, 'prescriptionId is required or Invalid');
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+                const recordExist = await getPrescriptionsById(req.params);
+                if (!recordExist) return failureResponse(res, 'employee Details Id record not found', NOT_FOUND_CODE);
+    
+                const updatedEmployeeDetails = await updatePrescription(req.body, recordExist);
+                return successResponse(
+                    res,
+                    'Employee Details Updated Successfully!',
+                    OK_CODE,
+                    updatedEmployeeDetails[1]
+                );
+            } catch (error) {
+                console.log("🚀 ~ file: EmployeeController.js ~ line 257 ~ EmployeeController ~ updatePrescription ~ error", {error})
+                return serverFailure(res, 'Could not update prescription');
+            }
+        }
+    
+        static async createTimeline(req, res) {
+            const { role } = req.user;
+            const transaction = await sequelize.transaction();
+            const validation = validateParms.createTimeline(req.body);
+            if (validation.error) return failureResponse(res, validation.error);
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+                const patientExist = await getPatient({ id: req.body.patientId });
+                if (!patientExist) return failureResponse(res, 'Patient does not exist', NOT_FOUND_CODE);
+    
+                const newCreatedTimeline = await createTimelineFn(req.body , { transaction });
+                await transaction.commit();
+                return successResponse(
+                    res,
+                    'Timeline Created Successfully!',
+                    RESOURCE_CREATED_CODE,
+                    newCreatedTimeline
+                );
+            } catch (error) {
+                await transaction.rollback();
+                return serverFailure(res, 'Could not create timeline');
+            }
+        }
 }
 
 module.exports = EmployeeController;
