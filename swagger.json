@@ -436,6 +436,10 @@
                 },
                 "bedNumber": {
                   "type": "string"
+                },
+                "isDischarged":{
+                  "type": "boolean",
+                  "defaultValue": "false"
                 }
               }
             }
@@ -1078,6 +1082,189 @@
         }
       }
     },
+    "/employee/timeline/create": {
+      "post": {
+        "summary": "Employee can create patient timeline",
+        "description": "Only Employees can create patient timeline",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient timeline details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "patientId":{
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Timeline Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not create timeline",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/prescription/create": {
+      "post": {
+        "summary": "Employee can create patient prescription",
+        "description": "Only Employees can create patient prescription",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient prescription details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "drugName": {
+                  "type": "string"
+                },
+                "dosage": {
+                  "type": "string"
+                },
+                "patientId": {
+                  "type": "string"
+                },
+                "drugType": {
+                  "type": "string"
+                },
+                "startDate": {
+                  "type": "string"
+                },
+                "period": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prescription Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not create prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/prescription/update/:{id}": {
+      "put": {
+        "summary": "Employee can update patient prescription",
+        "description": "Only Employees can update patient prescription, NOTE: id - refers to the id from the prescription",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient prescription details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "drugName": {
+                  "type": "string"
+                },
+                "dosage": {
+                  "type": "string"
+                },
+                "drugType": {
+                  "type": "string"
+                },
+                "startDate": {
+                  "type": "string"
+                },
+                "period": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prescription Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
     "/verify/token": {
       "get": {
         "summary": "verify a token",
@@ -1110,6 +1297,7 @@
       }
     }
   },
+ 
   "definitions": {
     "successResponse": {
       "type": "object",
