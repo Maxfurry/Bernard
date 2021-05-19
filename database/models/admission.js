@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     dischargedOn: DataTypes.DATE,
     roomNumber: DataTypes.STRING,
     bedNumber: DataTypes.STRING,
+    isDischarged: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Admission',
