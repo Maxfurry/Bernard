@@ -2,8 +2,9 @@ const bcrypt = require("bcrypt");
 const {
   Employee: employeeModel,
   EmployeeDetails: employeeDetailsModel,
+  Prescriptions: prescriptionModel,
+  Timelines: timelineModel
 } = require("../database/models");
-const employeeDetails = require("../database/models/employeeDetails");
 
 class Employee {
   static async createEmployeeFn(field = {}, transaction = {}) {
@@ -62,21 +63,21 @@ class Employee {
     previous_record = {},
     transaction = {}
   ) {
-    const firstName = field.firstName || previous_record.firstName;
-    const lastName = field.lastName || previous_record.lastName;
-    const dateOfBirth = field.dateOfBirth || previous_record.dateOfBirth;
-    const gender = field.gender || previous_record.gender;
-    const phoneNumber = field.phoneNumber || previous_record.phoneNumber;
-    const address = field.address || previous_record.address;
+    const drugName = field.drugName || previous_record.drugName;
+    const dosage = field.dosage || previous_record.dosage;
+    const drugType = field.drugType || previous_record.drugType;
+    const startDate = field.startDate || previous_record.startDate;
+    const period = field.period || previous_record.period;
+    const note = field.note || previous_record.note;
 
     return await employeeDetailsModel.update(
       {
-        firstName,
-        lastName,
-        dateOfBirth,
-        gender,
-        phoneNumber,
-        address,
+        drugName,
+        dosage,
+        drugType,
+        startDate,
+        period,
+        note,
         updatedAt: new Date(),
       },
       {
@@ -97,6 +98,61 @@ class Employee {
       ]
     }, transaction);
   }
+
+  static async getPrescriptionsById(field = {}, transaction = {}) {
+    const { prescriptionId } = field;
+
+    return prescriptionModel.findOne(
+      {
+        where: {
+          id: prescriptionId,
+        },
+      },
+      transaction
+    );
+  }
+
+
+  static async createPrescriptionFn(field = {}, transaction = {}) {
+
+    return await prescriptionModel.create(field, transaction);
+  }
+
+  static async createTimelineFn(field = {}, transaction = {}) {
+
+    return await timelineModel.create(field, transaction);
+  }
+
+
+  static async updatePrescription(
+    field = {},
+    previous_record = {},
+    transaction = {}
+  ) {
+    const drugName = field.drugName || previous_record.drugName;
+    const dosage = field.dosage || previous_record.dosage;
+    const drugType = field.drugType || previous_record.drugType;
+    const startDate = field.startDate || previous_record.startDate;
+    const period = field.period || previous_record.period;
+    const note = field.note || previous_record.note;
+
+    return await prescriptionModel.update(
+      {
+        drugName,
+        dosage,
+        drugType,
+        startDate,
+        period,
+        note,
+      },
+      {
+        where: { id: previous_record.id },
+        returning: true,
+      },
+      transaction
+    );
+  }
+
 }
 
 module.exports = Employee;
