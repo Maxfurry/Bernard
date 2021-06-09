@@ -1138,6 +1138,84 @@
         }
       }
     },
+    "/employee/timeline/:{patientId}": {
+      "get": {
+        "summary": "Employee can get patient timeline",
+        "description": "Only Employees can get patient timeline, NOTE: patientId - refers to the id from the patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient timeline details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all timelime successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch timeline",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/timeline/:{id}": {
+      "delete": {
+        "summary": "delete a timeline",
+        "description": "This route is to a timeline, Note: id - this is from the timeline id",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Timeline Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not delete timeline",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
     "/employee/prescription/create": {
       "post": {
         "summary": "Employee can create patient prescription",
@@ -1243,6 +1321,423 @@
         "responses": {
           "200": {
             "description": "Prescription Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },"/employee/prescription/:{patientId}": {
+      "get": {
+        "summary": "Employee can get patient prescription",
+        "description": "Only Employees can get patient prescription, NOTE: patientId - refers to the id from the patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient prescription details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all prescription successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/invoice/create": {
+      "post": {
+        "summary": "Doctors can create an invoice",
+        "description": "Only doctors can create an invoice, NOTE: items only accept Array of objects",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient Invoice",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "series": {
+                  "type": "string"
+                },
+                "No": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "patientId": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/invoice/:{patientId}": {
+      "get": {
+        "summary": "Doctor can get patient invoice",
+        "description": "Doctor can get invoice, NOTE: patientId - refers to the id from the patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient invoice details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all invoice successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/invoice/:{patientId}": {
+      "get": {
+        "summary": "Patient can get their invoice",
+        "description": "patient can get invoice, NOTE: patientId - refers to the id from the patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient invoice details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all invoice successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/invoice/delete/:{id}": {
+      "delete": {
+        "summary": "delete a patient invoice record",
+        "description": "This route is to delete a patient invoice record, NOTE: id = id from the invoice",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Invoice Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not delete invoice",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/receipt/:{patientId}": {
+      "get": {
+        "summary": "Patient can get their receipt",
+        "description": "patient can get receipt, NOTE: patientId - refers to the id from the patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient receipt details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all receipt successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/receipt/create": {
+      "post": {
+        "summary": "Doctors can create a receipt",
+        "description": "Only doctors can create a receipt",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient receipt",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "series": {
+                  "type": "string"
+                },
+                "No": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "paymentMode":{
+                  "type": "string"
+                },
+                "patientId": {
+                  "type": "string"
+                },
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/receipt/delete/:{id}": {
+      "delete": {
+        "summary": "delete a patient receipt record",
+        "description": "This route is to delete a patient receipt record, NOTE: id = id from the receipt",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Receipt Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not delete invoice",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/patient/prescription/:{patientId}": {
+      "get": {
+        "summary": "Patient can get their prescription",
+        "description": "Only patient can get prescription, NOTE: patientId - refers to the id from the patient",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "patient prescription details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all prescription successfully",
             "schema": {
               "type": "array",
               "items": {

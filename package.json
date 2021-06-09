@@ -10,11 +10,7 @@
     "migrate": "npx sequelize db:migrate",
     "lint": "npx eslint './**/*.js' --ext .js"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
+ 
   "author": "Peerless",
   "license": "ISC",
   "dependencies": {

@@ -7,7 +7,7 @@ const {
 } = require('../constants');
 const validateParms = require('../middleware/EmployeeController.validation');
 const { login: validatelogin } = require('../middleware/AuthController.validation');
-const { getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, updatePrescription, createTimelineFn } = require('../repository/Employee');
+const {deleteReceipt ,deleteInvoice,getTimeline, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
 const { deletePatient, getPatient } = require('../repository/Patient');
 require('dotenv').config();
@@ -255,11 +255,30 @@ static async getEmployeeProfile(req, res) {
                     updatedEmployeeDetails[1]
                 );
             } catch (error) {
-                console.log("🚀 ~ file: EmployeeController.js ~ line 257 ~ EmployeeController ~ updatePrescription ~ error", {error})
                 return serverFailure(res, 'Could not update prescription');
             }
         }
     
+        static async viewPrescription(req, res) {
+            const { role } = req.user;
+            const validation = idValidation({ id: req.params.patientId });
+            if (validation.error) return failureResponse(res, 'patientId is required or Invalid');
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+                const recordExist = await getPrescriptionsByPatientId(req.params);
+                return successResponse(
+                    res,
+                    'fetched all prescription successfully',
+                    OK_CODE,
+                    recordExist
+                );
+            } catch (error) {
+                return serverFailure(res, 'Could not get prescriptions');
+            }
+        }
+    
+
         static async createTimeline(req, res) {
             const { role } = req.user;
             const transaction = await sequelize.transaction();
@@ -284,6 +303,189 @@ static async getEmployeeProfile(req, res) {
                 return serverFailure(res, 'Could not create timeline');
             }
         }
+
+        static async viewTimeline(req, res) {
+            const { role } = req.user;
+            const validation = idValidation({ id: req.params.patientId });
+            if (validation.error) return failureResponse(res, 'patientId is required or Invalid');
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+                const recordExist = await getTimelineByPatientId(req.params);
+                return successResponse(
+                    res,
+                    'fetched all timeline successfully',
+                    OK_CODE,
+                    recordExist
+                );
+            } catch (error) {
+                return serverFailure(res, 'Could not get timeline');
+            }
+        }
+
+
+        static async deleteTimeline(req, res) {
+            const { role } = req.user;
+          if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+          
+          try {
+            const singleTimeline = await getTimeline({id: req.params.id});
+            if (!singleTimeline) return failureResponse(res, 'timeline record not found', NOT_FOUND_CODE);
+            await deleteTimeline(req.params);
+            return successResponse(
+              res,
+              'Timeline Deleted Successfully!',
+              OK_CODE
+            );
+          } catch (error) {
+            return serverFailure(res, 'Could not delete timeline');
+          }
+        }
+
+        
+
+            /**
+     * @param req.body -  {
+     *  email
+     *  password
+        firstname
+        lastName
+        role
+        dateOfBirth
+        gender
+        phoneNumber
+        address
+     * }
+     * @description create an employee
+     */
+    static async createInvoice(req, res) {
+        const { role } = req.user;
+        const transaction = await sequelize.transaction();
+
+        try {
+            if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+
+            const newCreatedInvoice = await createInvoice(req.body, { transaction });
+            await transaction.commit();
+            return successResponse(
+                res,
+                'Invoice Created Successfully!',
+                RESOURCE_CREATED_CODE,
+                newCreatedInvoice
+            );
+        } catch (error) {
+            await transaction.rollback();
+            return serverFailure(res, 'Could not create invoice');
+        }
+    }
+
+    static async viewInvoice(req, res) {
+        const validation = idValidation({ id: req.params.patientId });
+        if (validation.error) return failureResponse(res, 'patientId is required or Invalid');
+
+        try {
+           const recordExist = await getInvoiceByPatientId(req.params);
+            return successResponse(
+                res,
+                'fetched all invoice successfully',
+                OK_CODE,
+                recordExist
+            );
+        } catch (error) {
+           return serverFailure(res, 'Could not get invoice');
+        }
+    }
+
+                /**
+     * @param req.body -  {
+     *  email
+     *  password
+        firstname
+        lastName
+        role
+        dateOfBirth
+        gender
+        phoneNumber
+        address
+     * }
+     * @description create an employee
+     */
+        static async createReceipt(req, res) {
+            const { role } = req.user;
+            const transaction = await sequelize.transaction();
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+    
+                const newCreatedReceipt = await createReceiptFn(req.body, { transaction });
+                await transaction.commit();
+                return successResponse(
+                    res,
+                    'Receipt Created Successfully!',
+                    RESOURCE_CREATED_CODE,
+                    newCreatedReceipt
+                );
+            } catch (error) {
+                await transaction.rollback();
+                return serverFailure(res, 'Could not create receipt');
+            }
+        }
+
+        static async viewReciept(req, res) {
+            const validation = idValidation({ id: req.params.patientId });
+            if (validation.error) return failureResponse(res, 'patientId is required or Invalid');
+    
+            try {
+               const recordExist = await getReceiptByPatientId(req.params);
+                return successResponse(
+                    res,
+                    'fetched all receipt successfully',
+                    OK_CODE,
+                    recordExist
+                );
+            } catch (error) {
+               return serverFailure(res, 'Could not get invoice');
+            }
+        }
+
+        static async deleteReceipt(req, res) {
+            const { role } = req.user;
+          if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+          
+          try {
+            const singleReceipt = await getReceipt({id: req.params.id});
+            if (!singleReceipt) return failureResponse(res, 'receipt record not found', NOT_FOUND_CODE);
+            await deleteReceipt(req.params);
+
+            return successResponse(
+              res,
+              'Receipt Deleted Successfully!',
+              OK_CODE
+            );
+          } catch (error) {
+            return serverFailure(res, 'Could not delete receipt');
+          }
+        }
+        
+        static async deleteInvoice(req, res) {
+            const { role } = req.user;
+          if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+          
+          try {
+            const singleInvoice = await getInvoice({id: req.params.id});
+            if (!singleInvoice) return failureResponse(res, 'invoice record not found', NOT_FOUND_CODE);
+            await deleteInvoice(req.params);
+
+            return successResponse(
+              res,
+              'Invoice Deleted Successfully!',
+              OK_CODE
+            );
+          } catch (error) {
+            return serverFailure(res, 'Could not delete invoice');
+          }
+        }
+
 }
 
 module.exports = EmployeeController;
