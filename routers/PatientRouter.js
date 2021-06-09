@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const EmployeeController = require('../controllers/EmployeeController');
 const PatientController = require('../controllers/PatientController');
 const checkToken = require('../middleware/checkToken');
 
@@ -19,4 +20,10 @@ router.put('/profile/:patientId/edit', checkToken, PatientController.updatePatie
 router.get('/all', checkToken, PatientController.getAllPatients);
 
 router.get('/records/:patientId', checkToken, PatientController.getAllAdmissionRecordsForAPatientController);
+
+router.get('/prescription/:patientId', checkToken, PatientController.viewPrescription);
+
+router.get('/invoice/:patientId', checkToken, EmployeeController.viewInvoice);
+
+
 module.exports = router;

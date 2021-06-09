@@ -5,6 +5,8 @@ const {
   create, getPatient, searchForPatient, updatePatientRecord, getAllPatient, getAllAdmissionRecordForAPatient,
   getPatientByEmail
 } = require('../repository/Patient');
+const { getPrescriptionsByPatientId } = require('../repository/Employee');
+
 const { sequelize } = require('../database/models');
 const validateParms = require('../middleware/PatientController.validation');
 const { paginationQuery, idValidation } = require('../middleware/generalValidation');
@@ -201,6 +203,24 @@ class PatientController {
     return serverFailure(res, 'Could not fetch patient');
   }
 }
+
+static async viewPrescription(req, res) {
+  const validation = idValidation({ id: req.params.patientId });
+  if (validation.error) return failureResponse(res, 'patientId is required or Invalid');
+
+  try {
+      const recordExist = await getPrescriptionsByPatientId(req.params);
+      return successResponse(
+          res,
+          'fetched all prescription successfully',
+          OK_CODE,
+          recordExist
+      );
+  } catch (error) {
+      return serverFailure(res, 'Could not get prescriptions');
+  }
+}
+
 }
 
 module.exports = PatientController;

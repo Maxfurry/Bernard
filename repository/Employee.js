@@ -3,7 +3,11 @@ const {
   Employee: employeeModel,
   EmployeeDetails: employeeDetailsModel,
   Prescriptions: prescriptionModel,
-  Timelines: timelineModel
+  Timelines: timelineModel,
+  Invoice: invoiceModel,
+  InvoiceItem: invoiceItemModel,
+  Receipt: receiptModel,
+  ReceiptItem: receiptItemModel
 } = require("../database/models");
 
 class Employee {
@@ -112,6 +116,19 @@ class Employee {
     );
   }
 
+  static async getPrescriptionsByPatientId(field = {}, transaction = {}) {
+    const { patientId } = field;
+
+    return prescriptionModel.findAll(
+      {
+        where: {
+         patientId,
+        },
+      },
+      transaction
+    );
+  }
+
 
   static async createPrescriptionFn(field = {}, transaction = {}) {
 
@@ -152,6 +169,187 @@ class Employee {
       transaction
     );
   }
+
+  static async createInvoice(field = {}, transaction = {}) {
+    const { series, No, date , patientId, items} = field;
+    let InvoiceItems = [];
+
+    const invoice = await invoiceModel.create(
+      {
+      series,
+      No,
+      date,
+      patientId
+      },
+      transaction
+    );
+
+      if(items && items instanceof Array && items.length > 0){
+        for(let i = 0; i < items.length; i++){
+          const newInvoiceItem = await invoiceItemModel.create(
+            {
+              ...items[i],
+              invoiceId: invoice.id
+            },
+            transaction
+          );
+          InvoiceItems = [...InvoiceItems, newInvoiceItem]
+        }
+      }
+
+      return {
+        invoice,
+        items: InvoiceItems
+      }
+  }
+
+  static async getInvoiceByPatientId(field = {}, transaction = {}) {
+    const { patientId } = field;
+
+    return invoiceModel.findAll(
+      {
+        where: {
+         patientId,
+        },
+        include: [
+          {
+            model: invoiceItemModel,
+            as: 'items',
+          }
+        ]
+      },
+      transaction
+    );
+  }
+
+  static async createReceiptFn(field = {}, transaction = {}) {
+    const {series, No,  amount , paymentMode,  date , patientId, items} = field;
+    let ReceiptItems = [];
+
+    const receipt = await receiptModel.create(
+      {
+      series,
+      No,
+      amount,
+      paymentMode,
+      date,
+      patientId
+      },
+      transaction
+    );
+
+      if(items && items instanceof Array && items.length > 0){
+        for(let i = 0; i < items.length; i++){
+          const newReceiptItem = await receiptItemModel.create(
+            {
+              ...items[i],
+              receiptId: receipt.id
+            },
+            transaction
+          );
+          ReceiptItems = [...ReceiptItems, newReceiptItem]
+        }
+      }
+
+      return {
+        receipt,
+        items: ReceiptItems
+      }
+  }
+
+  static async getReceiptByPatientId(field = {}, transaction = {}) {
+    const { patientId } = field;
+
+    return receiptModel.findAll(
+      {
+        where: {
+         patientId,
+        },
+        include: [
+          {
+            model: receiptItemModel,
+            as: 'items',
+          }
+        ]
+      },
+      transaction
+    );
+  }
+
+  static async getTimelineByPatientId(field = {}, transaction = {}) {
+    const { patientId } = field;
+
+    return timelineModel.findAll(
+      {
+        where: {
+         patientId,
+        },
+      },
+      transaction
+    );
+  }
+
+  static async getTimeline(field = {}, transaction = {}) {
+    const { id } = field;
+
+    return timelineModel.findOne(
+      {
+        where: {
+         id,
+        },
+      },
+      transaction
+    );
+  }
+
+  static async deleteTimeline(field = {}, transaction = {}) {
+    return await timelineModel.destroy(
+      { returning: true, where: { id: field.id } },
+      transaction
+    );
+  }
+
+  static async deleteInvoice(field = {}, transaction = {}) {
+    return await invoiceModel.destroy(
+      { returning: false, where: { id: field.id } },
+      transaction
+    );
+  }
+
+  static async getInvoice(field = {}, transaction = {}) {
+    const { id } = field;
+
+    return invoiceModel.findOne(
+      {
+        where: {
+         id,
+        },
+      },
+      transaction
+    );
+  }
+
+  static async deleteReceipt(field = {}, transaction = {}) {
+    return await receiptModel.destroy(
+      { returning: false, where: { id: field.id } },
+      transaction
+    );
+  }
+
+  
+  static async getReceipt(field = {}, transaction = {}) {
+    const { id } = field;
+
+    return receiptModel.findOne(
+      {
+        where: {
+         id,
+        },
+      },
+      transaction
+    );
+  }
+
 
 }
 
