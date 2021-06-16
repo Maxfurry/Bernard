@@ -10,6 +10,7 @@ const { login: validatelogin } = require('../middleware/AuthController.validatio
 const {deleteReceipt ,deleteInvoice,getTimeline, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
 const { deletePatient, getPatient } = require('../repository/Patient');
+const { upLoad } = require('./UploadController');
 require('dotenv').config();
 
 class EmployeeController {
@@ -281,6 +282,7 @@ static async getEmployeeProfile(req, res) {
 
         static async createTimeline(req, res) {
             const { role } = req.user;
+            const { document: documentFile } = req.files;
             const transaction = await sequelize.transaction();
             const validation = validateParms.createTimeline(req.body);
             if (validation.error) return failureResponse(res, validation.error);
@@ -289,8 +291,22 @@ static async getEmployeeProfile(req, res) {
                 if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
                 const patientExist = await getPatient({ id: req.body.patientId });
                 if (!patientExist) return failureResponse(res, 'Patient does not exist', NOT_FOUND_CODE);
-    
-                const newCreatedTimeline = await createTimelineFn(req.body , { transaction });
+                
+               
+                if(documentFile){
+                    const uploadedDocument = await upLoad(documentFile, res);
+                    const newCreatedTimeline = await createTimelineFn({...req.body, document: uploadedDocument.secure_url} , { transaction });
+                    await transaction.commit();
+                    return successResponse(
+                        res,
+                        'Timeline Created Successfully!',
+                        RESOURCE_CREATED_CODE,
+                        newCreatedTimeline
+                    );
+                }
+
+
+                const newCreatedTimeline = await createTimelineFn({...req.body, document: uploadedDocument.secure_url} , { transaction });
                 await transaction.commit();
                 return successResponse(
                     res,
