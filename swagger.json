@@ -1085,7 +1085,7 @@
     "/employee/timeline/create": {
       "post": {
         "summary": "Employee can create patient timeline",
-        "description": "Only Employees can create patient timeline",
+        "description": "Only Employees can create patient timeline, *** NOTE: document is a file",
         "produces": ["application/json"],
         "consumes": ["application/json"],
         "parameters": [
@@ -1106,7 +1106,7 @@
                 "date": {
                   "type": "string"
                 },
-                "description": {
+                "document": {
                   "type": "string"
                 }
               }

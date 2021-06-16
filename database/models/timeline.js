@@ -31,7 +31,7 @@ const {
             allowNull: false,
             type: DataTypes.STRING
           },
-          description: {
+          document: {
             type: DataTypes.STRING
           },
           createdAt: {
