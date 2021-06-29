@@ -7,7 +7,7 @@ const {
 } = require('../constants');
 const validateParms = require('../middleware/EmployeeController.validation');
 const { login: validatelogin } = require('../middleware/AuthController.validation');
-const {deleteReceipt ,deleteInvoice,getTimeline, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt } = require('../repository/Employee');
+const {deleteReceipt ,deleteInvoice,getTimeline,deletePrescription, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
 const { deletePatient, getPatient } = require('../repository/Patient');
 const { upLoad } = require('./UploadController');
@@ -246,7 +246,7 @@ static async getEmployeeProfile(req, res) {
             try {
                 if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
                 const recordExist = await getPrescriptionsById(req.params);
-                if (!recordExist) return failureResponse(res, 'employee Details Id record not found', NOT_FOUND_CODE);
+                if (!recordExist) return failureResponse(res, 'prescription record not found', NOT_FOUND_CODE);
     
                 const updatedEmployeeDetails = await updatePrescription(req.body, recordExist);
                 return successResponse(
@@ -279,6 +279,26 @@ static async getEmployeeProfile(req, res) {
             }
         }
     
+
+        static async deletePrescription(req, res) {
+            const { role } = req.user;
+          if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+          
+          try {
+            const recordExist = await getPrescriptionsById(req.params);
+            if (!recordExist) return failureResponse(res, 'prescription record not found', NOT_FOUND_CODE);
+            await deletePrescription(req.params);
+            return successResponse(
+              res,
+              'Prescription Deleted Successfully!',
+              OK_CODE
+            );
+          } catch (error) {
+              console.log(error)
+            return serverFailure(res, 'Could not delete prescription');
+          }
+        }
+
 
         static async createTimeline(req, res) {
             const { role } = req.user;
