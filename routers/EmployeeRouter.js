@@ -22,6 +22,8 @@ router.post('/prescription/create', checkToken, EmployeeController.createPrescri
 
 router.put('/prescription/update/:prescriptionId', checkToken, EmployeeController.updatePrescription);
 
+router.delete('/prescription/:prescriptionId/delete', checkToken, EmployeeController.deletePrescription);
+
 router.post('/timeline/create', checkToken, EmployeeController.createTimeline);
 
 router.post('/timeline/create', checkToken, EmployeeController.createTimeline);

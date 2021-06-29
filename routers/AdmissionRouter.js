@@ -8,6 +8,6 @@ router.put('/:recordId/update', AdmissionController.updateAdmittedRecord);
 
 router.delete('/:recordId/delete', AdmissionController.deleteAdmissionRecordController);
 
-router.get('/:recordId', AdmissionController.getAdmissionRecordController);
+router.get('/:patientId', AdmissionController.getAdmissionRecordController);
 
 module.exports = router;
