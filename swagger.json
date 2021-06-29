@@ -485,9 +485,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "patientId": {
-                  "type": "string"
-                },
                 "admittedOn": {
                   "type": "string"
                 },
@@ -560,7 +557,7 @@
         }
       }
     },
-    "/patient/admit/:{recordId}": {
+    "/patient/admit/:{patientId}": {
       "get": {
         "summary": "get a patient admission record",
         "description": "This route is to get a patient admission record",
@@ -1103,6 +1100,9 @@
                 "title": {
                   "type": "string"
                 },
+                "description": {
+                  "type": "string"
+                },
                 "date": {
                   "type": "string"
                 },
@@ -1382,6 +1382,37 @@
           },
           "500": {
             "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/prescription/:{prescriptionId}/delete": {
+      "delete": {
+        "summary": "delete a patient prescription record",
+        "description": "This route is to delete a patient prescription record",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Prescription Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
             "schema": {
               "$ref": "#/definitions/serverFailure"
             }
