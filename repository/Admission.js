@@ -37,6 +37,17 @@ class Addmission {
     );
   }
 
+  static async getOneAdmissionRecordById(field = {}, transaction = {}) {
+    const { recordId } = field;
+    return admissionModel.findOne(
+      {
+        where: {
+          id: recordId
+        },
+      }, transaction
+    );
+  }
+
   static async deleteAdmissionRecord(field = {}, transaction = {}) {
     return await admissionModel.destroy(
       { returning: true, where: { id: field.recordId } },
@@ -45,11 +56,11 @@ class Addmission {
   }
 
   static async getAdmissionRecord(field = {}, transaction = {}) {
-    const { recordId } = field;
+    const { patientId } = field;
     return admissionModel.findAll(
       {
         where: {
-          patientId: recordId
+          patientId: patientId
         },
         include: [
           {

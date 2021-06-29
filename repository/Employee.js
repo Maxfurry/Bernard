@@ -170,6 +170,14 @@ class Employee {
     );
   }
 
+  static async deletePrescription(field = {}, transaction = {}) {
+    return await prescriptionModel.destroy(
+      { returning: true, where: { id: field.prescriptionId } },
+      transaction
+    );
+  }
+
+
   static async createInvoice(field = {}, transaction = {}) {
     const { series, No, date , patientId, items} = field;
     let InvoiceItems = [];

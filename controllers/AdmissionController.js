@@ -1,7 +1,7 @@
 const { RESOURCE_CREATED_CODE, NOT_FOUND_CODE, OK_CODE } = require('../constants');
 const { successResponse, serverFailure, failureResponse } = require('../utils/helperFunction');
 const {
-  create, updateAdmissionRecord, deleteAdmissionRecord, getAdmissionRecord
+  create, updateAdmissionRecord, deleteAdmissionRecord, getAdmissionRecord, getOneAdmissionRecordById
 } = require('../repository/Admission');
 const { getPatient } = require('../repository/Patient');
 const { sequelize } = require('../database/models');
@@ -49,7 +49,7 @@ class PatientController {
     if (validation.error) return failureResponse(res, 'recordId is required or Invalid');
 
     try {
-      const recordExist = await getAdmissionRecord({ recordId: req.params.recordId });
+      const recordExist = await getOneAdmissionRecordById({ recordId: req.params.recordId });
       if (!recordExist) return failureResponse(res, 'Record not found', NOT_FOUND_CODE);
 
       const updatedAdmissionRecord = await updateAdmissionRecord(req.body, recordExist);
@@ -89,7 +89,7 @@ class PatientController {
 * @description get a patient addmission record by record Id
 */
   static async getAdmissionRecordController(req, res) {
-    const validation = idValidation({ id: req.params.recordId });
+    const validation = idValidation({ id: req.params.patientId });
     if (validation.error) return failureResponse(res, 'recordId is required or Invalid');
 
     try {
