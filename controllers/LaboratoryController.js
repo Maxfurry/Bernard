@@ -3,17 +3,32 @@ const { successResponse, serverFailure, failureResponse } = require('../utils/he
 const {
     createPatientLabReport, getPatientLabReport, updatePatientLabReport, getAllLabReportForAPatient
 } = require('../repository/Laboratory');
+const { upLoad } = require('./UploadController');
 const { sequelize } = require('../database/models');
 const validateParms = require('../middleware/Laboratory.validation');
 const { idValidation } = require('../middleware/generalValidation');
 
 class PatientLabReportController {
     static async createLabReport(req, res) {
+        const { document: documentFile } = req.files;
         const validation = validateParms.createLabReportPatient(req.body);
         if (validation.error) return failureResponse(res, validation.error);
 
         const transaction = await sequelize.transaction();
         try {
+            
+            if(documentFile){
+                const uploadedDocument = await upLoad(documentFile, res);
+                const newPatientLabRecord = await createPatientLabReport({...req.body, document: uploadedDocument.secure_url} , { transaction });
+                await transaction.commit();
+                return successResponse(
+                    res,
+                    'Patient Lab Report Created Successfully!',
+                    RESOURCE_CREATED_CODE,
+                    newPatientLabRecord
+                );
+            }
+
             const newPatientLabRecord = await createPatientLabReport(req.body, { transaction });
             await transaction.commit();
             return successResponse(
