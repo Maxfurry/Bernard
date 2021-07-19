@@ -37,17 +37,6 @@ module.exports = {
         onDelete: 'CASCADE',
         allowNull: false
       },
-      admissionId: {
-        type: Sequelize.DataTypes.UUID,
-        references: {
-          model: {
-            tableName: 'Admissions',
-          },
-          key: 'id'
-        },
-        onDelete: 'CASCADE',
-        allowNull: false
-      },
     });
   },
 
