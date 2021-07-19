@@ -7,7 +7,7 @@ const {
 } = require('../constants');
 const validateParms = require('../middleware/EmployeeController.validation');
 const { login: validatelogin } = require('../middleware/AuthController.validation');
-const {deleteReceipt ,deleteInvoice,getTimeline,deletePrescription, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt } = require('../repository/Employee');
+const { getAnalytics,deleteExpense, getIncomeById , updateIncomeFn ,createIncomeFn , deleteReceipt ,deleteInvoice,getTimeline,deletePrescription, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt, getAllIncome, deleteIncome, createExpenseFn, getExpenseById, updateExpenseFn } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
 const { deletePatient, getPatient } = require('../repository/Patient');
 const { upLoad } = require('./UploadController');
@@ -522,6 +522,166 @@ static async getEmployeeProfile(req, res) {
           }
         }
 
+        static async createIncome(req, res){
+            const { role } = req.user;
+            if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+           
+            const transaction = await sequelize.transaction();
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+    
+                const newCreatedIncome = await createIncomeFn(req.body, { transaction });
+                await transaction.commit();
+                return successResponse(
+                    res,
+                    'Income Created Successfully!',
+                    RESOURCE_CREATED_CODE,
+                    newCreatedIncome
+                );
+            } catch (error) {
+                await transaction.rollback();
+                return serverFailure(res, 'Could not create income');
+            }
+        }
+
+        static async updateIncome(req, res) {
+            const { role } = req.user;
+            const validation = idValidation({ id: req.params.id });
+            if (validation.error) return failureResponse(res, 'Income ID is required or Invalid');
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+                const recordExist = await getIncomeById(req.params);
+                if (!recordExist) return failureResponse(res, 'income record not found', NOT_FOUND_CODE);
+    
+                const updatedIncome = await updateIncomeFn(req.body, recordExist);
+                return successResponse(
+                    res,
+                    'Income Updated Successfully!',
+                    OK_CODE,
+                    updatedIncome[1]
+                );
+              
+            } catch (error) {
+                return serverFailure(res, 'Could not update income');
+            }
+        }
+
+        static async getAllIncome(req, res) {
+            try {
+               const allIncome = await getAllIncome(req.params);
+                return successResponse(
+                    res,
+                    'fetched all income successfully',
+                    OK_CODE,
+                    allIncome
+                );
+            } catch (error) {
+               return serverFailure(res, 'Could not get income');
+            }
+        }
+
+        static async deleteIncome(req, res) {
+            const { role } = req.user;
+          if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+          
+          try {
+            const singleIncome = await getIncomeById({id: req.params.id});
+            if (!singleIncome) return failureResponse(res, 'income record not found', NOT_FOUND_CODE);
+            await deleteIncome(req.params);
+
+            return successResponse(
+              res,
+              'Income Deleted Successfully!',
+              OK_CODE
+            );
+          } catch (error) {
+            return serverFailure(res, 'Could not delete income');
+          }
+        }
+
+        static async createExpenses(req, res){
+            const { role } = req.user;
+            if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+           
+            const transaction = await sequelize.transaction();
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+    
+                const newCreatedexpense = await createExpenseFn(req.body, { transaction });
+                await transaction.commit();
+                return successResponse(
+                    res,
+                    'Expenses Created Successfully!',
+                    RESOURCE_CREATED_CODE,
+                    newCreatedexpense
+                );
+            } catch (error) {
+                await transaction.rollback();
+                return serverFailure(res, 'Could not create expense');
+            }
+        }
+
+        static async updateExpense(req, res) {
+            const { role } = req.user;
+            const validation = idValidation({ id: req.params.id });
+            if (validation.error) return failureResponse(res, 'Expense ID is required or Invalid');
+    
+            try {
+                if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+                const recordExist = await getExpenseById(req.params);
+                if (!recordExist) return failureResponse(res, 'expense record not found', NOT_FOUND_CODE);
+    
+                const updatedIncome = await updateExpenseFn(req.body, recordExist);
+                return successResponse(
+                    res,
+                    'Expenses Updated Successfully!',
+                    OK_CODE,
+                    updatedIncome[1]
+                );
+              
+            } catch (error) {
+                return serverFailure(res, 'Could not update expense');
+            }
+        }
+
+        static async deleteExpense(req, res) {
+            const { role } = req.user;
+          if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+          
+          try {
+            const recordExist = await getExpenseById(req.params);
+             if (!recordExist) return failureResponse(res, 'expense record not found', NOT_FOUND_CODE);
+             await deleteExpense(req.params);
+
+            return successResponse(
+              res,
+              'Expense Deleted Successfully!',
+              OK_CODE
+            );
+          } catch (error) {
+            return serverFailure(res, 'Could not delete expense');
+          }
+        }
+
+        static async analytics(req, res) {
+            const { role } = req.user;
+          if (role.toUpperCase() !== 'ADMIN') return failureResponse(res, 'Route restricted to admin only', BAD_REQUEST);
+          
+          try {
+            const analytics = await getAnalytics();
+             return successResponse(
+                res,
+                'analytics fetched success',
+                OK_CODE,
+                analytics
+            );
+          } catch (error) {
+            return serverFailure(res, 'Could not get analytics');
+          }
+        }
 }
 
 module.exports = EmployeeController;
