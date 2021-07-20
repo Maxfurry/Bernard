@@ -603,9 +603,6 @@
                 "patientId": {
                   "type": "string"
                 },
-                "admissionId": {
-                  "type": "string"
-                },
                 "testName": {
                   "type": "string"
                 },
@@ -616,6 +613,9 @@
                   "type": "string"
                 },
                 "comment": {
+                  "type": "string"
+                },
+                "document": {
                   "type": "string"
                 }
               }
@@ -663,9 +663,6 @@
               "type": "object",
               "properties": {
                 "patientId": {
-                  "type": "string"
-                },
-                "admissionId": {
                   "type": "string"
                 },
                 "testName": {
@@ -1744,6 +1741,174 @@
         }
       }
     },
+    "/employee/income": {
+      "get": {
+        "summary": "Fetch all income",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "income fetched successfully",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "fetched all prescription successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/income/create": {
+      "post": {
+        "summary": "Doctors can create income",
+        "description": "Only doctors can create income ** NOTE:- document is a file",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Income",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "incomeHead": {
+                  "type": "string"
+                },
+                "invoiceNumber": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string"
+                },
+                "document":{
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Income Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/income/{:id}/update": {
+      "put": {
+        "summary": "Doctors can update income",
+        "description": "Only doctors can update income",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Income",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "incomeHead": {
+                  "type": "string"
+                },
+                "invoiceNumber": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Income Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not update prescription",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
     "/patient/prescription/:{patientId}": {
       "get": {
         "summary": "Patient can get their prescription",
@@ -1791,6 +1956,193 @@
         }
       }
     },
+    "/employee/income/:{id}/delete": {
+      "delete": {
+        "summary": "delete n income record",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Income Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/expense/create": {
+      "post": {
+        "summary": "Doctors can create expenses",
+        "description": "Only doctors can create income ** NOTE:- document is a file",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Expenses",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "expensesHead": {
+                  "type": "string"
+                },
+                "invoiceNumber": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string"
+                },
+                "document":{
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Expenses Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not create expense",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/expense/:{id}/update": {
+      "put": {
+        "summary": "Doctors can create expenses",
+        "description": "Only doctors can create income ** NOTE:- document is a file",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Expenses",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "expensesHead": {
+                  "type": "string"
+                },
+                "invoiceNumber": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "string"
+                },
+                "document":{
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Expenses Created Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not create expense",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+    "/employee/expense/:{id}/delete": {
+      "delete": {
+        "summary": "delete an expense record",
+        "description": "",
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Expense Deleted Successfully!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/successResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters error",
+            "schema": {
+              "$ref": "#/definitions/failureResponse"
+            }
+          },
+          "500": {
+            "description": "Could not fetch patient",
+            "schema": {
+              "$ref": "#/definitions/serverFailure"
+            }
+          }
+        }
+      }
+    },
+
     "/verify/token": {
       "get": {
         "summary": "verify a token",
@@ -1814,7 +2166,7 @@
             }
           },
           "500": {
-            "description": "Could not fetch patient",
+            "description": "Could not fetch expense",
             "schema": {
               "$ref": "#/definitions/serverFailure"
             }

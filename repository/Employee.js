@@ -6,6 +6,9 @@ const {
   Timelines: timelineModel,
   Invoice: invoiceModel,
   InvoiceItem: invoiceItemModel,
+  Income: incomeModel,
+  Expenses: expenseModel,
+  Patient: patientModel,
   Receipt: receiptModel,
   ReceiptItem: receiptItemModel
 } = require("../database/models");
@@ -359,6 +362,140 @@ class Employee {
   }
 
 
+  static async createIncomeFn(field = {}, transaction = {}) {
+    return incomeModel.create(field, transaction);
+  }
+
+  static async getIncomeById(field = {}, transaction = {}) {
+    const { id } = field;
+
+    return incomeModel.findOne(
+      {
+        where: {
+          id,
+        },
+      },
+      transaction
+    );
+  }
+
+  static async updateIncomeFn(
+    field = {},
+    previous_record = {},
+    transaction = {}
+  ) {
+    const incomeHead = field.incomeHead || previous_record.incomeHead;
+    const invoiceNumber = field.invoiceNumber || previous_record.invoiceNumber;
+    const amount = field.amount || previous_record.amount;
+    const description = field.description || previous_record.description;
+    const date = field.date || previous_record.date;
+
+    return await incomeModel.update(
+      {
+       incomeHead,
+       invoiceNumber,
+       amount,
+       description,
+       date
+      },
+      {
+        where: { id: previous_record.id },
+        returning: true,
+      },
+      transaction
+    );
+  }
+
+  static async getAllIncome(field = {}, transaction = {}) {
+    return incomeModel.findAll();
+  }
+
+  static async deleteIncome(field = {}, transaction = {}) {
+    return await incomeModel.destroy(
+      { returning: false, where: { id: field.id } },
+      transaction
+    );
+  }
+
+  static async createExpenseFn(field = {}, transaction = {}) {
+    return expenseModel.create(field, transaction);
+  }
+
+  static async getExpenseById(field = {}, transaction = {}) {
+    const { id } = field;
+
+    return expenseModel.findOne(
+      {
+        where: {
+          id,
+        },
+      },
+      transaction
+    );
+  }
+
+  
+  static async updateExpenseFn(
+    field = {},
+    previous_record = {},
+    transaction = {}
+  ) {
+    const expensesHead = field.expensesHead || previous_record.expensesHead;
+    const invoiceNumber = field.invoiceNumber || previous_record.invoiceNumber;
+    const amount = field.amount || previous_record.amount;
+    const description = field.description || previous_record.description;
+    const date = field.date || previous_record.date;
+
+    return await expenseModel.update(
+      {
+        expensesHead,
+       invoiceNumber,
+       amount,
+       description,
+       date
+      },
+      {
+        where: { id: previous_record.id },
+        returning: true,
+      },
+      transaction
+    );
+  }
+
+  static async deleteExpense(field = {}, transaction = {}) {
+    return await expenseModel.destroy(
+      { returning: false, where: { id: field.id } },
+      transaction
+    );
+  }
+
+  static async getAnalytics(
+    field = {},
+    transaction = {}
+  ) {
+
+    const patientCount =  await patientModel.count();
+    const staff_count = await employeeModel.count();
+    const male_count = await  patientModel.count({
+      where: { gender: 'male' }
+    })
+    const female_count = await patientModel.count({
+      where: { gender: 'female' }
+    })
+
+    const male_percentage = (parseInt(male_count) * 100 / patientCount);
+    const female_percentage = (parseInt(female_count) * 100 / patientCount);
+    const ambulance =5;
+  return {
+   total_patient: patientCount,
+   staff_count, 
+   male_count, 
+   female_count,
+   male_percentage,
+   female_percentage,
+   ambulance
+   }
+  }
 }
 
 module.exports = Employee;

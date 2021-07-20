@@ -47,6 +47,20 @@ router.delete('/receipt/delete/:id', checkToken, EmployeeController.deleteReceip
 
 router.get('/receipt/:patientId', checkToken, EmployeeController.viewReciept);
 
+router.get('/income/', checkToken, EmployeeController.getAllIncome);
 
+router.post('/income/create', checkToken, EmployeeController.createIncome);
+
+router.put('/income/:id/update', checkToken, EmployeeController.updateIncome);
+
+router.delete('/income/:id/delete', checkToken, EmployeeController.deleteIncome);
+
+router.post('/expense/create', checkToken, EmployeeController.createExpenses);
+
+router.put('/expense/:id/update', checkToken, EmployeeController.updateExpense);
+
+router.delete('/expense/:id/delete', checkToken, EmployeeController.deleteExpense);
+
+router.get('/analytics/', checkToken, EmployeeController.analytics);
 
 module.exports = router;
