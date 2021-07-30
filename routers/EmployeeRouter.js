@@ -57,6 +57,8 @@ router.delete('/income/:id/delete', checkToken, EmployeeController.deleteIncome)
 
 router.post('/expense/create', checkToken, EmployeeController.createExpenses);
 
+router.get('/expense/', checkToken, EmployeeController.getAllExpense);
+
 router.put('/expense/:id/update', checkToken, EmployeeController.updateExpense);
 
 router.delete('/expense/:id/delete', checkToken, EmployeeController.deleteExpense);

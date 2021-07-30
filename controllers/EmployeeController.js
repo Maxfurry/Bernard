@@ -7,7 +7,7 @@ const {
 } = require('../constants');
 const validateParms = require('../middleware/EmployeeController.validation');
 const { login: validatelogin } = require('../middleware/AuthController.validation');
-const { getAnalytics,deleteExpense, getIncomeById , updateIncomeFn ,createIncomeFn , deleteReceipt ,deleteInvoice,getTimeline,deletePrescription, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt, getAllIncome, deleteIncome, createExpenseFn, getExpenseById, updateExpenseFn } = require('../repository/Employee');
+const { getAllExpenseFn, getAnalytics,deleteExpense, getIncomeById , updateIncomeFn ,createIncomeFn , deleteReceipt ,deleteInvoice,getTimeline,deletePrescription, createReceiptFn ,createInvoice ,getEmployeeByEmail, getAllEmployeeData, updateEmployeeDetail, getEmployeeDetailsById, createEmployeeFn, createPrescriptionFn, getPrescriptionsById, getPrescriptionsByPatientId, updatePrescription, createTimelineFn, getInvoiceByPatientId, getReceiptByPatientId, getTimelineByPatientId, deleteTimeline, getInvoice, getReceipt, getAllIncome, deleteIncome, createExpenseFn, getExpenseById, updateExpenseFn } = require('../repository/Employee');
 const { idValidation } = require('../middleware/generalValidation');
 const { deletePatient, getPatient } = require('../repository/Patient');
 const { upLoad } = require('./UploadController');
@@ -621,6 +621,20 @@ static async getEmployeeProfile(req, res) {
             } catch (error) {
                 await transaction.rollback();
                 return serverFailure(res, 'Could not create expense');
+            }
+        }
+
+         static async getAllExpense(req, res) {
+            try {
+               const allExpense = await getAllExpenseFn(req.params);
+                return successResponse(
+                    res,
+                    'fetched all expenses successfully',
+                    OK_CODE,
+                    allExpense
+                );
+            } catch (error) {
+               return serverFailure(res, 'Could not get expense');
             }
         }
 

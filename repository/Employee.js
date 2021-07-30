@@ -434,6 +434,10 @@ class Employee {
     );
   }
 
+  static async getAllExpenseFn(field = {}, transaction = {}) {
+    return expenseModel.findAll();
+  }
+
   
   static async updateExpenseFn(
     field = {},
